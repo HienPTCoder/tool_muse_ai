@@ -1,0 +1,14 @@
+secrets/
+browser_profile/
+capture/
+.venv/
+output/
+*.db
+*.pyc
+__pycache__/
+.DS_Store
+.claude/
+*.mp4
+*.mov
+*.mp3
+*.wav

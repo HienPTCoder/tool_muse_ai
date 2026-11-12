@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kịch bản video đầu tiên 棒人間アリーナ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@700;900&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Palette = the channel's: washi paper, sumi ink, vermilion (Aka only). Layout: one reading column, wide tables, act colour bars. */
+:root{
+  color-scheme:light;
+  --paper:#f3efe4; --surface:#fffdf7; --ink:#14111a; --muted:#645f70; --line:#d9d2c2;
+  --verm:#d3202a; --verm-soft:#f8e1de; --indigo:#2d4a86; --gold:#b98a1d; --grey:#8a8794;
+  --fb:"Be Vietnam Pro","Noto Sans JP",system-ui,sans-serif; --fs:"Noto Serif JP","Hiragino Mincho ProN",serif; --fj:"Noto Sans JP",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#15131a;--surface:#1d1a23;--ink:#efece4;--muted:#a09bab;--line:#322e3a;--verm:#ff6b70;--verm-soft:#33191b;--indigo:#8aa6e6;--gold:#e0b64a;--grey:#a9a6b3;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#15131a;--surface:#1d1a23;--ink:#efece4;--muted:#a09bab;--line:#322e3a;--verm:#ff6b70;--verm-soft:#33191b;--indigo:#8aa6e6;--gold:#e0b64a;--grey:#a9a6b3;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--fb);line-height:1.65}
+.wrap{max-width:1080px;margin:0 auto;padding:36px 18px 90px}
+header.top{border-bottom:4px solid var(--ink);padding-bottom:22px;margin-bottom:28px}
+.eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--verm);font-weight:700;margin:0 0 10px}
+h1{font-family:var(--fs);font-weight:900;font-size:clamp(1.8rem,4.6vw,2.8rem);line-height:1.15;margin:0 0 12px;text-wrap:balance}
+.standfirst{color:var(--muted);max-width:64ch;margin:0}
+.facts{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:18px;font-size:.86rem;color:var(--muted)}
+.facts b{color:var(--ink)}
+h2{font-family:var(--fs);font-weight:900;font-size:1.45rem;margin:50px 0 6px;text-wrap:balance}
+h2 .n{color:var(--verm);margin-right:.45em;font-variant-numeric:tabular-nums}
+h3{font-size:1.02rem;margin:26px 0 6px;font-weight:700}
+p{max-width:68ch}
+.jp{font-family:var(--fj)}
+.lede{color:var(--muted);margin-top:0}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 22px;margin:16px 0}
+.box.verm{border-left:5px solid var(--verm)}
+.box.gold{border-left:5px solid var(--gold)}
+.box h3{margin-top:0}
+.tl{display:flex;height:46px;border-radius:6px;overflow:hidden;border:2px solid var(--ink);margin:18px 0 6px}
+.tl div{display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;text-align:center;padding:0 4px;line-height:1.15}
+.tlx{display:flex;font-size:.72rem;color:var(--muted)}
+.tlx span{text-align:center;overflow:hidden;white-space:nowrap}
+.a0{background:#5b5668}.a1{background:var(--indigo)}.a2{background:#3f7d5a}.a3{background:#7a3f8a}.a4{background:var(--verm)}.a5{background:#14111a}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:860px}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--verm-soft);font-size:.74rem;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.t{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600}
+td.k{white-space:nowrap;font-weight:700}
+tr.act td{background:var(--ink);color:var(--paper);font-weight:700;letter-spacing:.04em}
+tr.act td b{color:#ffd36b}
+.tag{display:inline-block;font-size:.7rem;font-weight:700;padding:1px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.plant{color:var(--indigo)}.pay{color:var(--verm)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--verm);border-radius:8px;padding:14px 16px}
+.card h4{margin:0 0 4px;font-size:1rem}
+.card .role{font-size:.78rem;color:var(--muted);display:block;margin-bottom:6px}
+.card p{margin:0;font-size:.88rem}
+ul{max-width:70ch;padding-left:20px}li{margin-bottom:6px}
+.note{font-size:.84rem;color:var(--muted);max-width:70ch}
+footer{margin-top:50px;font-size:.84rem;color:var(--muted)}
+a:focus-visible{outline:2px solid var(--verm);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">Kế hoạch kịch bản · Video đầu tiên · 棒人間アリーナ</p>
+  <h1>百人抜き<br>Một trăm người, và một nửa chiếc khăn</h1>
+  <p class="standfirst">Phim hoạt hình câm dài khoảng 110 giây, dọc 9:16. Bề ngoài là một trận "hạ 100 người". Bên dưới là câu chuyện về một chiếc khăn bị xé đôi, và người đang chờ ở cuối đấu trường.</p>
+  <div class="facts">
+    <span><b>Thời lượng:</b> ~110 giây (≤ 3 phút, vẫn là Shorts)</span>
+    <span><b>Khung:</b> 1080×1920, 24fps</span>
+    <span><b>Lời thoại:</b> không có; âm thanh + nhạc + diễn xuất</span>
+    <span><b>Nhân vật:</b> 5 chính + 4 đối thủ có tên + khán giả có mặt</span>
+    <span><b>Chữ Nhật trên hình:</b> 5 chỗ (xem mục 8)</span>
+    <span><b>Kết:</b> mở, dẫn sang tập 2</span>
+  </div>
+</header>
+
+<h2><span class="n">01</span>Logline và vì sao nó không đơn giản</h2>
+<div class="box verm">
+<p style="margin:0"><b>Logline.</b> Một kiếm sĩ mặt lạnh lao vào đấu trường để hạ 100 người liên tiếp. Giữa chừng kiếm gãy, anh phải nhớ lại lý do mình mang nửa chiếc khăn đỏ, rồi biến chính chiếc khăn thành vũ khí. Hạ đến người thứ 100 thì cánh cửa của nhà vô địch mở ra, và người bước ra đang quấn nửa còn lại của chiếc khăn.</p>
+</div>
+<p>Các phim "100 người" thường chỉ là một chuỗi đòn đánh. Bản này có thêm bốn lớp để người xem có lý do ở lại:</p>
+<ul>
+  <li><b>Một bí ẩn được mở ngay giây đầu</b>: đồng hồ 99/100, đối thủ cuối là một quân tốt bé tí. Vì sao anh do dự? Câu trả lời đến ở giây 94, khi cảnh này được chiếu lại với ý nghĩa mới.</li>
+  <li><b>Một vật xuyên suốt</b>: chiếc khăn. Nó bay trong mọi cảnh, được chạm tay ở giây 15, là ký ức ở giây 67, là vũ khí ở giây 82, và là chìa khoá của cú lật cuối.</li>
+  <li><b>Một nhân vật phụ có trái tim</b>: quân tốt tí hon ghi điểm. Cậu vừa gây cười, vừa là người đưa Anh trở lại trận ở đáy của câu chuyện.</li>
+  <li><b>Mỗi trận dạy một chiêu, rồi chiêu đó được dùng tiếp</b>: không có đòn nào xuất hiện chỉ để cho đẹp.</li>
+</ul>
+
+<h2><span class="n">02</span>Bảng nhân vật: mỗi người một dáng, một tính, một tiếng động</h2>
+<p class="lede">Tất cả đều cùng họ Bo (đầu bi đen, mắt to, viền sôi, thân gọn), nên danh tính phải đến từ <b>bốn thứ</b>: dáng bóng đen, màu và chi tiết trang phục, cách đi cách đứng, và tiếng động riêng. Nhìn một cái là biết ai, kể cả khi thu nhỏ trên điện thoại.</p>
+
+<h3>Nhóm chính</h3>
+<div class="cols">
+  <div class="card"><h4><span class="jp">アカ</span> · Aka</h4><span class="role">Kiếm sĩ · anh hùng</span>
+    <p><b>Tính:</b> ít nói, kiêu hãnh, không bao giờ nhờ ai. Bên ngoài lạnh, bên trong nặng chuyện cũ.<br>
+    <b>Thiết kế:</b> võ phục trắng ngà, hakama chàm, đai và khăn đỏ, kiếm chuôi đỏ. Mí mắt nặng, đồng tử rất nhỏ, đầu trơn.<br>
+    <b>Cách đi:</b> thong thả, gót chạm trước, tay buông lỏng. Không bao giờ vội, kể cả khi bị vây.<br>
+    <b>Thói quen:</b> sờ đuôi khăn khi nghĩ; liếc ra phía máy quay sau mỗi chiến thắng.<br>
+    <b>Tiếng:</b> bước nhẹ, tiếng vải; nốt đàn khi chạm khăn.</p></div>
+  <div class="card" style="border-top-color:#c9a14a"><h4><span class="jp">小僧</span> · Kozō</h4><span class="role">Người ghi điểm · bạn đồng hành</span>
+    <p><b>Tính:</b> hiền, hậu đậu, nghiêm túc quá mức. Run nhưng không bỏ chạy. Lòng trung thành đến từ một ơn nhỏ.<br>
+    <b>Thiết kế:</b> bé bằng nửa Aka, áo cộc vàng nâu, tạp dề to đeo túi phấn, <b>nón rơm quá cỡ trượt xuống che mắt</b>. Mắt to bất thường, đồng tử <b>lớn</b> (ngược hẳn Aka), lông mày luôn lo lắng.<br>
+    <b>Cách đi:</b> bước ngắn, nhanh, hay vấp; chạy thì nón bay.<br>
+    <b>Thói quen:</b> liếm đầu phấn, đếm bằng ngón tay, cúi chào mọi người kể cả kẻ địch.<br>
+    <b>Tiếng:</b> lạch bạch, "tách" của phấn quẹt.</p></div>
+  <div class="card" style="border-top-color:#5a5260"><h4><span class="jp">古参</span> · Kosan</h4><span class="role">Lão binh · đối thủ ngang tầm</span>
+    <p><b>Tính:</b> kiên nhẫn, hiểm, thích chơi đùa con mồi. Không vội vì biết mình thắng.<br>
+    <b>Thiết kế:</b> xám than + gỉ sắt, <b>giáp vai sắt một bên</b>, gậy bọc sắt, <b>một vết sẹo cắt ngang lông mày</b>, nụ cười lệch. Thân chắc, đứng thấp, vững như cọc.<br>
+    <b>Cách đi:</b> nặng, chậm, từng bước đóng xuống đất.<br>
+    <b>Thói quen:</b> gõ gậy hai lần xuống sàn trước mỗi đòn. Người xem học được nhịp này ở cảnh 11 và 12; đến cảnh 18 anh ta <b>gõ một lần rồi đánh ngay</b> để đánh lừa, nhưng Aka đã thuộc nhịp nên không mắc bẫy.<br>
+    <b>Tiếng:</b> sắt gõ đá, hơi thở dài.</p></div>
+  <div class="card" style="border-top-color:var(--ink)"><h4><span class="jp">鬼将</span> · Kishō</h4><span class="role">Nhà vô địch · bí ẩn</span>
+    <p><b>Tính:</b> điềm tĩnh, buồn, kiệm lời. Nguy hiểm vì <b>không có cơn giận</b>.<br>
+    <b>Thiết kế:</b> cao gấp rưỡi, hai sừng sau mũ có tấm che gáy, áo choàng tím sẫm viền vàng, búa quá khổ. <b>Mí mắt nặng giống hệt Aka</b>: nét họ hàng ngầm. Nửa khăn đỏ quấn cẳng tay trái.<br>
+    <b>Cách đi:</b> rất chậm, kéo búa lê trên đá, không bao giờ nhìn xuống.<br>
+    <b>Tiếng:</b> búa lê, một nốt đàn trầm.</p></div>
+  <div class="card" style="border-top-color:var(--grey)"><h4><span class="jp">師匠</span> · Thầy (hồi tưởng)</h4><span class="role">10 giây ký ức</span>
+    <p><b>Tính:</b> dịu dàng nhưng có điều chưa nói.<br>
+    <b>Thiết kế:</b> vẽ nét mảnh kiểu khác (giấy cũ, một màu đỏ). Cao, gầy, nón rộng, áo dài; <b>lông mày cong cao, hiền</b>, trái với Kishō. Hai bàn tay luôn ấm áp.<br>
+    <b>Cách đi:</b> chậm, nhẹ, như không chạm đất.<br>
+    <b>Tiếng:</b> mưa, tiếng vải, đàn dây.</p></div>
+</div>
+
+<h3>Nhóm đối thủ có tên (xuất hiện trong 100 người)</h3>
+<p class="note">Không phải 100 bản sao. Mỗi trận trong kịch bản là một <b>va chạm tính cách</b>: cái cách đối thủ thua nói lên anh ta là ai.</p>
+<div class="cols">
+  <div class="card" style="border-top-color:#d98b3a"><h4><span class="jp">ゴンタ</span> · Gonta</h4><span class="role">Trận 1 · kẻ khoe mẽ</span>
+    <p><b>Tính:</b> tự tin thái quá, thích khán giả.<br>
+    <b>Thiết kế:</b> áo ghi-lê cam, <b>dải khăn buộc đầu tung bay</b>, gậy trang trí sợi tua. Lông mày nhướng cao, môi nhếch. Đồng tử bình thường.<br>
+    <b>Cách đánh:</b> xoay gậy, le lưỡi, đâm theo kiểu phô diễn.<br>
+    <b>Cách thua:</b> ngã rồi vẫn cố giữ dáng đẹp.</p></div>
+  <div class="card" style="border-top-color:#5f8f5a"><h4><span class="jp">ドス</span> · Dosu</h4><span class="role">Trận 2 · gã to xác hiền</span>
+    <p><b>Tính:</b> chậm hiểu, vui vẻ, không ác ý.<br>
+    <b>Thiết kế:</b> bụng tròn, rộng gấp rưỡi người thường, áo xanh rêu, đai to. Đồng tử nhỏ xíu, miệng luôn hơi mở.<br>
+    <b>Cách đánh:</b> giơ gậy cao rồi đập xuống, nặng, rõ từng nhịp.<br>
+    <b>Cách thua:</b> bị chém xong còn <b>vẫy tay chào khán giả</b> rồi mới ngã.</p></div>
+  <div class="card" style="border-top-color:#d6b22f"><h4><span class="jp">カマキリ</span> · Kamakiri</h4><span class="role">Trận 3 · gã gầy giật</span>
+    <p><b>Tính:</b> lo âu, cáu bẳn, đánh để khỏi suy nghĩ.<br>
+    <b>Thiết kế:</b> <b>rất gầy, tay chân dài</b>, quần bó vàng chanh, mắt chớp liên tục. Lông mày giật.<br>
+    <b>Cách đánh:</b> quét gậy thấp, bật nhảy bất ngờ.<br>
+    <b>Cách thua:</b> bị hất lên, rơi vào đám đông, một <b>bà lão phe phẩy quạt</b> đập anh ta văng trở lại.</p></div>
+  <div class="card" style="border-top-color:#6b7fb8"><h4><span class="jp">三兄弟</span> · Ba anh em</h4><span class="role">Trận 4 · ba tên một lượt</span>
+    <p>Cùng một bộ giáp xanh nhạt, ba tính cách khác nhau:<br>
+    <b>Cả</b> (cao, lì lợm, đi đầu). <b>Hai</b> (bắt chước từng động tác của Cả, chậm một nhịp). <b>Út</b> (nhỏ nhất, <b>nấp sau lưng</b> hai anh, đồng tử rất to vì sợ).<br>
+    <b>Gag:</b> Aka đâm xuyên cả ba, riêng Út <b>kịp nghiêng người</b> tránh, cứ tưởng mình thoát, rồi mới ngã vì đứng sát.</p></div>
+</div>
+
+<h3>Khán giả cũng có người</h3>
+<p>Không để khán giả là đám đông đồng phục. Có <b>năm mặt lặp lại</b> xuyên phim: bà lão phe phẩy quạt (dùng ở cảnh 9), một đứa trẻ ngồi trên vai cha, một người đang ngủ gật, người bán nước, một người luôn đứng dậy sớm hơn mọi người. Mỗi người chỉ cần <b>một động tác riêng</b>.</p>
+
+<h3>Cách nhận ra từng người trong một giây</h3>
+<div class="tablewrap">
+<table style="min-width:760px">
+<thead><tr><th>Nhân vật</th><th>Bóng đen</th><th>Màu chủ đạo</th><th>Mắt</th><th>Chuyển động</th><th>Tiếng riêng</th></tr></thead>
+<tbody>
+<tr><td class="k">Aka</td><td>Cân đối, khăn bay</td><td>Trắng + chàm + <b>đỏ</b></td><td>Đồng tử nhỏ, mí nặng</td><td>Thong thả</td><td>Bước nhẹ, nốt đàn</td></tr>
+<tr><td class="k">Kozō</td><td>Bé, nón rơm to</td><td>Vàng nâu</td><td>Đồng tử <b>to</b>, lo âu</td><td>Bước ngắn, hay vấp</td><td>Lạch bạch, phấn "tách"</td></tr>
+<tr><td class="k">Kosan</td><td>Vuông, đứng thấp, giáp một vai</td><td>Than + gỉ sắt</td><td>Sẹo ở lông mày</td><td>Nặng, chậm</td><td>Gõ gậy hai lần</td></tr>
+<tr><td class="k">Kishō</td><td>Cao gấp rưỡi, hai sừng</td><td>Tím sẫm + <b>vàng</b></td><td>Mí nặng như Aka</td><td>Rất chậm</td><td>Búa lê trên đá</td></tr>
+<tr><td class="k">Gonta</td><td>Ngực ưỡn, khăn bay</td><td>Cam</td><td>Lông mày nhướng</td><td>Phô diễn</td><td>Xoay gậy vù vù</td></tr>
+<tr><td class="k">Dosu</td><td>Tròn, rộng</td><td>Xanh rêu</td><td>Đồng tử nhỏ xíu</td><td>Chậm, nặng</td><td>Thịch thịch</td></tr>
+<tr><td class="k">Kamakiri</td><td>Gầy, tay chân dài</td><td>Vàng chanh</td><td>Chớp liên tục</td><td>Giật, bất ngờ</td><td>Tiếng gậy vút sắc</td></tr>
+<tr><td class="k">Ba anh em</td><td>Cao / vừa / bé</td><td>Xanh nhạt</td><td>Lì / bắt chước / sợ</td><td>Một nhịp lệch nhau</td><td>Ba tiếng chân so le</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Hai ngoại lệ có chủ ý với luật màu: <b>đỏ</b> thuộc về Aka, trừ nửa chiếc khăn trên tay Kishō (đó chính là cú lật); <b>vàng viền</b> thuộc về Kishō. Không nhân vật nào khác dùng hai màu này.</p>
+
+<h2><span class="n">03</span>Quy luật của thế giới (người xem học trong 10 giây)</h2>
+<ul>
+  <li>Đấu trường có <b>một cổng vào, đóng lại sau lưng</b>. Không có đường rút.</li>
+  <li>Biển luật bằng <b>biểu tượng</b> (100 hình người xếp hàng, mũi tên, một bóng có sừng), không bằng câu chữ: hạ đủ 100 người thì được đấu với nhà vô địch.</li>
+  <li><b>Kozō ghi điểm</b> bằng vạch phấn trên tường. Bảng đếm 撃破 trên màn hình và vạch phấn luôn khớp nhau, nên bảng đếm có "lý do tồn tại" trong thế giới truyện.</li>
+  <li>Từ trận thứ 50, đối thủ vào <b>hai người một lượt</b>. Độ khó tăng và người xem thấy ngay.</li>
+</ul>
+
+<h2><span class="n">04</span>Cấu trúc năm hồi</h2>
+<div class="tl">
+  <div class="a0" style="width:8.2%">MỞ</div><div class="a1" style="width:16.4%">LUẬT</div><div class="a2" style="width:27.3%">LEO THANG</div><div class="a3" style="width:22.7%">GÃY</div><div class="a4" style="width:16.4%">ĐÁP TRẢ</div><div class="a5" style="width:9%">LẬT</div>
+</div>
+<div class="tlx"><span style="width:8.2%">0:00</span><span style="width:16.4%">0:09</span><span style="width:27.3%">0:27</span><span style="width:22.7%">0:57</span><span style="width:16.4%">1:22</span><span style="width:9%">1:40</span></div>
+<p class="note">Điểm giữa phim (số đếm 50, giây 46) là lúc luật đổi. Đáy của phim là giây 57 đến 67, kiếm gãy và ký ức. Đoạn leo thang chiếm ~27% vì đó là phần "thưởng thức" của phim.</p>
+
+<h2><span class="n">05</span>Kịch bản từng cảnh</h2>
+<p class="lede">Cột <b>Vai trò</b> cho biết mỗi cảnh làm việc gì trong câu chuyện. <span class="tag plant">gài</span> là một chi tiết được đặt trước, <span class="tag pay">trả</span> là lúc nó được dùng.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>#</th><th>Giờ</th><th>Chuyện gì xảy ra</th><th>Máy quay · hiệu ứng</th><th>Âm thanh</th><th>Vai trò</th></tr></thead>
+<tbody>
+<tr class="act"><td colspan="6">HỒI 0 · MỞ (0:00 – 0:09) · <b>câu hỏi trước, câu trả lời sau</b></td></tr>
+<tr><td class="k">1</td><td class="t">0:00–0:03</td><td>Đấu trường ban đêm, đèn lồng. Bảng đếm <b>99/100</b>. Aka đứng giữa, khăn rách, kiếm mẻ, thở dốc. Khán giả im phăng phắc.</td><td>Toàn cảnh tĩnh, đẩy chậm vào mặt. Màu nhạt, vignette.</td><td>Gió, tim đập, một tiếng đèn lồng kẽo kẹt.</td><td>Đặt câu hỏi: chuyện gì đã xảy ra?</td></tr>
+<tr><td class="k">2</td><td class="t">0:03–0:06</td><td>Cổng mở. Đối thủ cuối cùng bước vào: <b>Kozō</b>, bé tí, gậy dài hơn cả người, run bần bật. Aka nhìn xuống, mí mắt nặng. Kozō nuốt nước bọt.</td><td>Cắt hai mặt: mắt Aka / mắt Kozō. Góc thấp nhìn Kozō.</td><td>Cổng két mở, bước chân lạch bạch.</td><td>Gây tò mò + hài. Vì sao đối thủ 99 lại bé thế này?</td></tr>
+<tr><td class="k">3</td><td class="t">0:06–0:09</td><td>Aka nhấc kiếm... <b>đóng băng</b>. Bảng đếm quay ngược vèo về 0, hình ảnh lùi nhanh, màu đậm lại. Chữ <span class="jp">百人抜き</span> đóng dấu hanko.</td><td>Rewind: hiệu ứng quay ngược của bảng đếm, cắt ngang vào tiêu đề.</td><td>Tiếng băng tua ngược, một nhịp taiko, im bặt.</td><td>Cho người xem biết "ta sẽ xem lại từ đầu".</td></tr>
+
+<tr class="act"><td colspan="6">HỒI 1 · LUẬT (0:09 – 0:27)</td></tr>
+<tr><td class="k">4</td><td class="t">0:09–0:12</td><td>Hoàng hôn. Toàn cảnh đấu trường. Một tấm <b>biển gỗ</b> cắm cạnh cổng: 100 hình người xếp hàng → mũi tên → một bóng có hai sừng.</td><td>Máy quay chậm lia từ biển lên khán đài.</td><td>Nhạc nền vào: bass walking nhẹ.</td><td>Giải thích luật bằng hình, không bằng chữ. <span class="tag plant">gài</span> bóng có sừng</td></tr>
+<tr><td class="k">5</td><td class="t">0:12–0:17</td><td>Aka chạy nghiêng người vào, trượt phanh, rút kiếm (đoạn đã làm). Rồi anh <b>chạm vào đuôi khăn</b>: mép khăn bị xé lởm chởm. Mắt hơi hạ xuống.</td><td>Cận cảnh bàn tay + mép khăn rách, 2 giây.</td><td>Chạy, trượt, rút kiếm. Một nốt đàn ngắn khi chạm khăn.</td><td><span class="tag plant">gài</span> chiếc khăn bị xé</td></tr>
+<tr><td class="k">6</td><td class="t">0:17–0:19</td><td>Cổng sắt <b>sập xuống</b> sau lưng. Khán giả gầm lên. Vạch phấn đầu tiên: Kozō ngồi cạnh cổng, cầm cục phấn.</td><td>Máy rung nhẹ, bụi.</td><td>Sập cổng, tiếng đám đông, tiếng phấn quẹt.</td><td>Không có đường lui. <span class="tag plant">gài</span> Kozō ghi điểm</td></tr>
+<tr><td class="k">7</td><td class="t">0:19–0:27</td><td><b>Trận 1 · Gonta.</b> Gonta xoay gậy, le lưỡi chọc khán giả, đâm theo kiểu phô diễn. Aka <b>đỡ</b>, tia lửa, giơ kiếm, <b>chém dọc phản công</b>. Gonta văng ra nhưng <b>vẫn cố ngã cho đẹp</b>. Aka liếc ra máy quay, mặt lạnh. Đếm <b>3</b>.</td><td>Vệt chém đỏ, sao nổ. Cắt gần vào nét mặt.</td><td>Gậy chạm kiếm, taiko vào nhịp, tick bảng đếm.</td><td>Cho người xem thấy kiểu đánh: đỡ rồi mới đánh</td></tr>
+
+<tr class="act"><td colspan="6">HỒI 2 · LEO THANG (0:27 – 0:57) · <b>mỗi trận dạy một chiêu, và trả lại sau</b></td></tr>
+<tr><td class="k">8</td><td class="t">0:27–0:33</td><td><b>Trận 2 · Dosu.</b> Dosu cười hiền, giơ gậy cao đập xuống. Aka <b>lùi một bước</b>, gậy nện vỡ một viên gạch sàn. Aka <b>chém ngang</b>. Dosu <b>vẫy tay chào khán giả</b> rồi mới ngã. Đếm <b>9</b>.</td><td>Máy bám theo bước lùi. Bụi bay.</td><td>Đập đất nặng, rạn gạch, vút kiếm.</td><td>Dạy: né bằng khoảng cách. <span class="tag plant">gài</span> gạch vỡ</td></tr>
+<tr><td class="k">9</td><td class="t">0:33–0:39</td><td><b>Trận 3 · Kamakiri.</b> Kamakiri giật mình, quét gậy thấp, bật nhảy bất ngờ. Aka <b>ngồi thấp, nhảy qua</b>, <b>chém ngược từ dưới lên</b>. Kamakiri bị hất lên, rơi vào khán giả; <b>bà lão phe phẩy quạt</b> đập anh ta văng trở lại sân. Đếm <b>17</b>.</td><td>Vệt chém lật lên, đốm sáng bay. Cú đá khán giả: cắt nhanh.</td><td>Vút gió, tiếng "bộp" của khán giả, tiếng cười.</td><td>Hài + dạy chiêu thứ ba</td></tr>
+<tr><td class="k">10</td><td class="t">0:39–0:46</td><td><b>Ba anh em.</b> Cả đi đầu, Hai bắt chước chậm một nhịp, Út nấp sau. Aka <b>lướt đâm trên không</b> xuyên cả ba; riêng Út <b>kịp nghiêng người</b> tưởng thoát, rồi mới ngã. Một cây gậy lạc văng về phía <b>Kozō</b>, Aka kịp thời gạt đi. Kozō nhìn anh, mắt long lanh. Cậu ghi dấu phấn mới. Đếm nhảy 24 → 40 qua một chuỗi cắt nhanh vạch phấn trên tường.</td><td>Bóng mờ đỏ, vạch tốc độ, cung ")))". Cắt nhanh vạch phấn dày lên.</td><td>Nhạc dồn, mỗi vạch phấn là một tiếng "tách".</td><td><span class="tag plant">gài</span> Kozō mang ơn Aka</td></tr>
+<tr><td class="k">11</td><td class="t">0:46–0:51</td><td><b>Giữa phim. Đếm 50.</b> Tiếng chiêng. Biển luật đổi: hình hai người. Vào sân là <b>Kosan</b>: xám than, giáp vai sắt, sẹo ngang lông mày. Anh ta <b>gõ gậy hai lần</b> xuống sàn, nhếch mép. Giọt mồ hôi đầu tiên của Aka.</td><td>Cận mắt Aka, đồng tử nhỏ lại. Toàn cảnh Kosan bước vào, góc thấp.</td><td>Chiêng, im lặng nửa nhịp, bass trầm.</td><td>Đổi luật + giới thiệu mối đe doạ. <span class="tag plant">gài</span> gậy sắt</td></tr>
+<tr><td class="k">12</td><td class="t">0:51–0:57</td><td>Kosan <b>gõ gậy hai lần</b>, rồi đánh. Aka đỡ gậy sắt: một tiếng <b>"rắc"</b>. Anh nhìn xuống lưỡi kiếm: <b>một vết nứt</b>. Kosan nhếch mép. Đếm <b>63</b>.</td><td>Cận lưỡi kiếm, vết nứt, ánh sáng loé.</td><td>Sắt chạm thép, tiếng rắc, nhạc chùng xuống.</td><td><span class="tag plant">gài</span> kiếm nứt</td></tr>
+
+<tr class="act"><td colspan="6">HỒI 3 · GÃY (0:57 – 1:22) · <b>đáy của câu chuyện</b></td></tr>
+<tr><td class="k">13</td><td class="t">0:57–1:03</td><td>Chuỗi cắt nhanh: đếm bay <b>63 → 82</b>. Aka bị <b>vây sáu mặt</b>. Kosan đập gậy sắt: kiếm <b>gãy làm đôi</b>. Mũi kiếm gãy quay tít, <b>cắm xuống sàn ngay cạnh Kozō</b>. Mọi âm thanh tắt.</td><td>Cắt nhanh rồi <b>đứng yên ~1 giây</b>: cận chuôi kiếm trơ trọi trong tay.</td><td><b>Ngắt hẳn âm thanh</b> 1 giây. Rồi chỉ còn tiếng thở.</td><td><span class="tag pay">trả</span> vết nứt. Cú đau nhất của phim</td></tr>
+<tr><td class="k">14</td><td class="t">1:03–1:07</td><td>Gậy đập vào vai, Aka <b>khuỵu gối</b>. Khán giả im. Đuôi khăn rơi xuống che nửa mặt anh. Anh nhìn mép khăn rách.</td><td>Máy hạ thấp, cận mép khăn. Mờ dần sang màu nhạt.</td><td>Tiếng thở, tiếng đàn một nốt kéo dài.</td><td>Cầu nối sang ký ức</td></tr>
+<tr><td class="k">15</td><td class="t">1:07–1:17</td><td><b>Hồi tưởng, 10 giây.</b> Nét vẽ khác hẳn: giấy cũ, mực mảnh, chỉ duy nhất màu đỏ. <b>Aka bé</b> ngồi dưới mưa. Một dáng người cao, chưa có sừng, quấn chiếc khăn lên cổ cậu, rồi <b>xé khăn làm đôi</b>, buộc nửa còn lại lên tay mình, quay đi qua một cánh cửa. Aka bé đưa tay theo. Cánh cửa khép. Trên cánh cửa, <b>bóng của một cái mũ có sừng</b> lướt qua.</td><td>Khung hình đổi tỉ lệ, viền giấy cháy. Chậm, ít cắt.</td><td>Mưa, đàn dây gảy đơn (kiểu shamisen). Không nhạc nền.</td><td>Nguồn gốc chiếc khăn + <span class="tag plant">gài</span> thầy rời đi, sừng</td></tr>
+<tr><td class="k">16</td><td class="t">1:17–1:22</td><td>Về hiện tại. <b>Kozō</b> chạy ra giữa sân, hai tay nhỏ xíu <b>kéo tay Aka</b>, nón rơm rơi mất. Aka nhìn cậu bé, rồi nhìn mép khăn. Anh đứng dậy, <b>quấn khăn quanh nắm đấm</b>, khăn dài ra. Lần đầu tiên <b>mắt anh mở to hết cỡ</b>.</td><td>Cận mắt mở to. Máy xoay quanh tay quấn khăn.</td><td>Nhạc trở lại, taiko vào dần.</td><td>Bước ngoặt cảm xúc: anh đứng dậy vì ai?</td></tr>
+
+<tr class="act"><td colspan="6">HỒI 4 · ĐÁP TRẢ (1:22 – 1:40) · <b>mọi thứ đã gài được trả</b></td></tr>
+<tr><td class="k">17</td><td class="t">1:22–1:30</td><td><b>Khăn thành roi.</b> Aka quật khăn quấn chân hai tên, kéo ngã; khăn cuốn gậy, giật văng; khăn vút một vòng, hạ ba tên liền. Đếm <b>82 → 98</b>. Khán giả đứng dậy.</td><td>Vệt khăn đỏ nhiều lớp, máy theo vòng quay khăn.</td><td>Nhạc dồn, tiếng khăn quất, đám đông gầm.</td><td><span class="tag pay">trả</span> khăn · hết kiếm vẫn đánh được</td></tr>
+<tr><td class="k">18</td><td class="t">1:30–1:34</td><td>Kosan còn lại một mình. Anh ta <b>gõ gậy một lần</b> rồi đánh ngay, định lừa nhịp quen thuộc; Aka đã thuộc nhịp nên không bị bất ngờ. Gậy sắt vung xuống: Aka đạp lên <b>viên gạch vỡ</b>, bật người, khăn quấn cổ chân Kosan, kéo ngã. Đếm <b>99</b>. Hết người. Khán giả lúng túng rồi <b>đẩy Kozō (người ghi điểm) vào sân</b>.</td><td>Lấy lại bố cục cảnh 1 để người xem nhận ra.</td><td>Gạch vỡ lách tách, khán giả đẩy "ơ ơ".</td><td><span class="tag pay">trả</span> gạch vỡ. Hết 99 người, thiếu 1</td></tr>
+<tr><td class="k">19</td><td class="t">1:34–1:40</td><td><b>Cảnh mở đầu quay lại</b>, nhưng giờ đủ màu: Kozō run rẩy, Aka đứng với chuôi kiếm gãy và khăn quấn tay. Anh <b>cúi xuống, búng nhẹ trán</b> Kozō. Cậu quay một vòng ngồi bệt. Kozō <b>tự gạch dấu phấn thứ 100</b>, rồi cúi chào khán giả. Đếm <b>100</b>. Tiếng chiêng.</td><td>Khung hình giống cảnh 1–2 để "chiếu lại có ý nghĩa mới".</td><td>Chiêng, đám đông nổ tung, nốt vui.</td><td><span class="tag pay">trả</span> câu hỏi ở giây 3. Vì sao anh do dự? Vì anh đã khác</td></tr>
+
+<tr class="act"><td colspan="6">HỒI 5 · LẬT (1:40 – 1:50) · <b>móc câu</b></td></tr>
+<tr><td class="k">20</td><td class="t">1:40–1:43</td><td>Cánh cửa lớn ở đầu kia đấu trường <b>rung lên, bụi rơi</b>. Khán giả im phăng phắc. Kozō giật mình.</td><td>Cắt từ Aka sang cánh cửa lớn, góc thấp.</td><td>Tiếng cửa nghiến, bass cực trầm.</td><td>Căng thẳng dâng</td></tr>
+<tr><td class="k">21</td><td class="t">1:43–1:46</td><td><b>Bóng Kishō</b> trong khung cửa: hai sừng, búa kéo lê. Máy hạ xuống <b>cẳng tay</b> anh ta: <b>nửa chiếc khăn đỏ</b>, mép xé lởm chởm.</td><td>Cận cẳng tay, đủ lâu để nhận ra.</td><td>Búa kéo trên đá, một nốt đàn.</td><td><span class="tag pay">trả</span> khăn, sừng ở ký ức. Cú lật</td></tr>
+<tr><td class="k">22</td><td class="t">1:46–1:48</td><td>Cận mắt Aka: <b>đồng tử co lại</b>. Gió từ cửa thổi qua: khăn trên tay Aka và nửa khăn trên tay Kishō <b>cùng bay về phía nhau</b>.</td><td>Cắt qua lại hai cái khăn.</td><td>Tiếng gió, mọi thứ khác tắt.</td><td>Người xem tự nối thầy với Kishō</td></tr>
+<tr><td class="k">23</td><td class="t">1:48–1:50</td><td>Kishō <b>giơ búa</b>. Aka giơ <b>chuôi kiếm gãy</b>. <b>Cắt đen.</b> Chữ <span class="jp">続く</span> kèm tên tập sau.</td><td>Cắt đen thẳng trên cú đập.</td><td>Một tiếng nện, rồi im lặng.</td><td>Móc câu cho tập 2</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2><span class="n">06</span>Kiểm tra logic: điều gì được gài, điều gì được trả</h2>
+<div class="tablewrap">
+<table style="min-width:760px">
+<thead><tr><th>Chi tiết gài</th><th>Cảnh gài</th><th>Cảnh trả</th><th>Nếu bỏ thì mất gì</th></tr></thead>
+<tbody>
+<tr><td>Chiếc khăn bị xé</td><td>5 (chạm mép rách), 14</td><td>15, 16, 17, 21</td><td>Khăn thành vũ khí mà không có lý do cảm xúc</td></tr>
+<tr><td>Vết nứt trên kiếm</td><td>12</td><td>13</td><td>Kiếm gãy thành "tự nhiên bị gãy", mất nhân quả</td></tr>
+<tr><td>Gạch vỡ trên sàn</td><td>8</td><td>18</td><td>Cú đạp bật người chỉ là một chiêu ngẫu nhiên</td></tr>
+<tr><td>Kozō ghi điểm</td><td>6, 10</td><td>16, 18, 19</td><td>Bảng đếm là đồ trang trí; không có nhân vật để mở hồi 3 và 4</td></tr>
+<tr><td>Aka cứu Kozō khỏi cây gậy lạc</td><td>10</td><td>16</td><td>Kozō kéo anh đứng dậy mà không có lý do</td></tr>
+<tr><td>Bóng người có sừng</td><td>4 (biển), 15 (cửa)</td><td>21</td><td>Kishō xuất hiện từ hư không, không có dư vị</td></tr>
+<tr><td>Cảnh 99/100 + Kozō vào sân</td><td>1–3</td><td>19</td><td>Mở đầu chỉ là một cú gây sốc, không được trả lại</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Câu chuyện đóng được ba tầng: <b>Aka thắng 100 người</b> (hoàn tất), <b>Aka tìm được lý do đứng dậy</b> (hoàn tất), và <b>thầy là Kishō?</b> (cố tình để mở cho tập 2).</p>
+
+<h2><span class="n">07</span>Nhạc và âm thanh</h2>
+<div class="tablewrap">
+<table style="min-width:700px">
+<thead><tr><th>Hồi</th><th>Nhạc</th><th>Tiếng động</th><th>Khoảng lặng</th></tr></thead>
+<tbody>
+<tr><td class="k">0 · Mở</td><td>Gần như không nhạc; một nốt taiko khi quay ngược.</td><td>Gió, tim đập, đèn lồng kẽo kẹt.</td><td>Trước khi quay ngược.</td></tr>
+<tr><td class="k">1 · Luật</td><td>Bass walking, hi-hat nhẹ. 120 bpm.</td><td>Bước chạy, trượt phanh, cổng sập.</td><td>—</td></tr>
+<tr><td class="k">2 · Leo thang</td><td>Thêm taiko, vỗ tay, chuông nhỏ. Dồn dần.</td><td>Mỗi cú đánh một lớp riêng (đỡ, chém, đập đất).</td><td>Chiêng ở giữa phim.</td></tr>
+<tr><td class="k">3 · Gãy</td><td>Cắt nhạc ngay lúc kiếm gãy. Hồi tưởng: đàn dây gảy đơn, mưa.</td><td>Tiếng rắc, tiếng thở.</td><td><b>1 giây im tuyệt đối lúc kiếm gãy.</b></td></tr>
+<tr><td class="k">4 · Đáp trả</td><td>Nhạc trở lại mạnh hơn, taiko đầy đủ.</td><td>Khăn quất, đám đông gầm, chiêng.</td><td>—</td></tr>
+<tr><td class="k">5 · Lật</td><td>Bass cực trầm kéo dài.</td><td>Cửa nghiến, búa lê, gió.</td><td>Trước cú đập, cắt đen im lặng.</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2><span class="n">08</span>Chữ tiếng Nhật xuất hiện trên hình</h2>
+<p>Chỉ năm chỗ, và tôi cố tình tránh câu dài để bạn bên Nhật soát nhanh:</p>
+<ul>
+  <li><span class="jp"><b>百人抜き</b></span> (tiêu đề, giây 6)</li>
+  <li><span class="jp"><b>撃破</b></span> trên bảng đếm (đã có)</li>
+  <li><span class="jp"><b>棒人間</b></span> trên cờ treo (đã có)</li>
+  <li><span class="jp"><b>続く</b></span> (giây 108)</li>
+  <li>Tên tập sau trong thẻ cuối (cần chốt)</li>
+</ul>
+<p class="note">Không có hội thoại, nên phần phụ thuộc vào tiếng Nhật rất nhỏ. Điều này đúng với kế hoạch kênh: ngách người que không cần soát văn bản dài.</p>
+
+<h2><span class="n">09</span>Cái gì phải dựng mới, và công sức</h2>
+<div class="tablewrap">
+<table style="min-width:700px">
+<thead><tr><th>Hạng mục</th><th>Tình trạng</th></tr></thead>
+<tbody>
+<tr><td>Aka, Zako, Kozō (bản tí hon), đấu trường, bảng đếm, 4 chiêu, hiệu ứng chém</td><td><span class="tag" style="color:var(--indigo)">đã có</span></td></tr>
+<tr><td>Kosan: dáng vuông, giáp một vai, sẹo, gậy sắt; Gonta, Dosu, Kamakiri, ba anh em</td><td>Mới, <b>vừa đến lớn</b>: mỗi người một dáng (béo, gầy, cao thấp) và một bộ quần áo riêng. Đây là phần tăng nhiều nhất so với kế hoạch trước</td></tr>
+<tr><td>Kozō theo thiết kế riêng: nón rơm, tạp dề, túi phấn, đồng tử to</td><td>Mới, vừa (không còn là Zako thu nhỏ)</td></tr>
+<tr><td>Năm mặt khán giả lặp lại (bà lão, đứa trẻ trên vai, người ngủ, người bán nước, người đứng sớm)</td><td>Mới, nhỏ nhưng phải có mỗi người một động tác</td></tr>
+<tr><td>Kishō theo phong cách Bo: hai sừng, búa, áo choàng</td><td>Mới, <b>lớn</b> (chưa có bản Bo, mới có bản mực cọ cũ)</td></tr>
+<tr><td>Kiếm gãy (cán + mũi kiếm văng), các thế khuỵu gối / đứng dậy / bị vây</td><td>Mới, vừa</td></tr>
+<tr><td>Khăn thành roi: cơ chế khăn dài, quấn, giật, cùng vệt đỏ</td><td>Mới, <b>lớn</b> (khăn hiện chỉ là dải trang trí)</td></tr>
+<tr><td>Cảnh hồi tưởng nét mảnh, giấy cũ, một màu đỏ; Aka bé; dáng thầy</td><td>Mới, <b>lớn</b> (một style hoàn toàn riêng)</td></tr>
+<tr><td>Vạch phấn trên tường, biển luật bằng biểu tượng, cổng sắt, cửa lớn, gạch vỡ</td><td>Mới, vừa</td></tr>
+<tr><td>Nhạc: đàn dây gảy đơn cho hồi tưởng</td><td>Cần cài thêm gói nhạc (numba), hoặc dùng bản tổng hợp đơn giản hơn</td></tr>
+</tbody>
+</table>
+</div>
+<div class="box gold">
+<h3>Khối lượng thật, để bạn tính trước</h3>
+<p style="margin:0">Short 11 giây trước đã cần rất nhiều vòng chỉnh. Bản này dài gấp 10, có thêm ba hạng mục lớn (Kishō, khăn roi, cảnh hồi tưởng) <b>và sáu thiết kế nhân vật mới</b> vì giờ mỗi đối thủ có dáng riêng. Tôi đề xuất dựng <b>theo từng hồi, duyệt xong mới sang hồi sau</b>, thay vì dựng cả 110 giây rồi mới cho xem.</p>
+</div>
+<h3>Thứ tự đề xuất</h3>
+<ol>
+  <li><b>Bảng nhân vật</b>: một tờ model sheet cho cả dàn (Aka, Kozō, Kosan, Gonta, Dosu, Kamakiri, ba anh em, Kishō). Bạn duyệt dáng và tính cách ở đây trước, vì sửa nhân vật sau khi đã dựng cảnh rất tốn.</li>
+  <li><b>Animatic</b>: 23 khung tĩnh đúng thời lượng, kèm nhạc nháp. Để bạn kiểm tra nhịp và mạch truyện trước khi đầu tư vào hình.</li>
+  <li><b>Hồi 0 + 1 + 2</b> (0:00 – 0:57): phần dùng lại nhiều nhất những gì đã có.</li>
+  <li><b>Khăn roi + cảnh hồi tưởng</b> (thử nghiệm riêng, vì là hai chỗ dễ hỏng nhất).</li>
+  <li><b>Hồi 3 + 4</b>.</li>
+  <li><b>Kishō + hồi 5</b>, rồi ráp, trộn âm, kiểm tra.</li>
+</ol>
+
+<h2><span class="n">10</span>Tiêu đề, thumbnail, mô tả</h2>
+<div class="box">
+<h3>Ba phương án tiêu đề (cần người Nhật soát)</h3>
+<ul>
+  <li class="jp">【棒人間】100人抜きの先に待っていたのは…【アニメーション】</li>
+  <li class="jp">【棒人間】剣が折れた剣士が、100人抜きに挑む【バトル】</li>
+  <li class="jp">【棒人間】赤いマフラーの半分【100人抜き】</li>
+</ul>
+<p class="note">Phương án 1 an toàn và giữ tag theo mô-típ ngách. Phương án 3 là gợi ý tôi thích nhất vì nó nói về chiếc khăn chứ không chỉ về cuộc đánh, nhưng cũng là phương án ít "tìm kiếm được" nhất.</p>
+<h3>Thumbnail</h3>
+<p style="margin:0">Aka quỳ giữa sân, cầm cái chuôi kiếm gãy, đuôi khăn bay về một bên. Đầu kia khung hình, <b>bóng Kishō cầm nửa chiếc khăn đỏ</b>. Số <b>100</b> đỏ to ở góc. Hai nửa khăn nhìn như hai đầu của một sợi dây, kể ngay câu chuyện.</p>
+<h3>Mô tả (dòng đầu)</h3>
+<p class="jp" style="margin:0">赤いマフラーを巻いた剣士が、100人抜きに挑む。折れた剣、小さな味方、そして最後の扉の向こうにいたのは。 #棒人間 #スティックマン #100人抜き</p>
+</div>
+
+<h2><span class="n">11</span>Rủi ro và cách xử lý</h2>
+<ul>
+  <li><b>Nền tảng chặn nội dung sản xuất đại trà.</b> Phim này có kịch bản riêng, nhân vật khoá, mạch truyện không lặp lại. Tập 2 phải có kịch bản khác thật sự, không chỉ đổi màu.</li>
+  <li><b>Cảnh hồi tưởng có thể lố</b>: 10 giây ít cắt dễ nhàm. Giữ ngắn, chỉ một ý (xé khăn, đi qua cửa).</li>
+  <li><b>Người xem có thể không nối thầy với Kishō</b>. Cảnh 21 và 22 phải đủ lâu và rõ để nhận ra cái khăn. Tôi sẽ thử độ đọc được ở kích thước điện thoại.</li>
+  <li><b>Cảnh 16 là cảnh dễ gượng nhất</b>: một nhân vật bé tí kéo anh hùng đứng dậy rất dễ thành sến. Cách tôi giữ nó nhẹ là để Kozō vẫn vụng về (mất nón, vấp) và Aka không nói gì, chỉ mở mắt.</li>
+</ul>
+
+<h2><span class="n">12</span>Các bản cắt ngắn từ cùng một phim</h2>
+<ul>
+  <li><b>60 giây (cho Shorts nhanh)</b>: bỏ trận 3 và bớt hồi tưởng còn 5 giây; vẫn giữ kiếm gãy, khăn roi, Kishō.</li>
+  <li><b>20 giây (teaser)</b>: cảnh 1 → quay ngược → hồi 2 rút gọn → cảnh 21. Cắt từ chính phim, dùng để đăng trước.</li>
+</ul>
+
+<footer>
+  <p>Kế hoạch này dựa trên những gì đã chốt: bộ nhân vật Bo-style (アカ, 雑魚兵), tỉ lệ thân mới, đầu trơn không tóc không băng, kiếm chi tiết, góc nhìn ngang, bốn chiêu và hiệu ứng tấn công. Những chỗ tôi quyết thay bạn đã ghi rõ ở trên.</p>
+</footer>
+</div>
+</body>
+</html>

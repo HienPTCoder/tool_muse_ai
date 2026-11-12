@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muse Video Studio</title>
+<style>
+:root {
+  --bg: #f5f6f8; --panel: #ffffff; --panel2: #f0f2f5; --text: #15171a; --muted: #6b7280;
+  --border: #e3e6ea; --accent: #2563eb; --accent-fg: #fff; --ok: #16a34a; --warn: #d97706;
+  --err: #dc2626; --run: #7c3aed; --shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115; --panel: #171a20; --panel2: #1f232b; --text: #e8eaee; --muted: #9aa1ad;
+    --border: #2a2f38; --accent: #4f8bff; --ok: #22c55e; --warn: #f59e0b; --err: #f87171; --run: #a78bfa;
+    --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  background: var(--bg); color: var(--text); }
+button, input, select, textarea { font: inherit; color: inherit; }
+.app { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+aside { background: var(--panel); border-right: 1px solid var(--border); padding: 20px 12px;
+  display: flex; flex-direction: column; gap: 4px; position: sticky; top: 0; height: 100vh; }
+.brand { font-weight: 700; font-size: 16px; padding: 4px 10px 18px; display: flex; gap: 8px; align-items: center; }
+.brand i { width: 26px; height: 26px; border-radius: 8px; background: linear-gradient(135deg, #6366f1, #ec4899); display: inline-block; }
+.nav { border: 0; background: none; text-align: left; padding: 9px 12px; border-radius: 8px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; }
+.nav:hover { background: var(--panel2); }
+.nav.active { background: var(--panel2); font-weight: 600; }
+.nav .count { font-size: 12px; color: var(--muted); }
+.status-box { margin-top: auto; padding: 12px; border-radius: 10px; background: var(--panel2); font-size: 13px; display: grid; gap: 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; background: var(--muted); }
+.dot.ok { background: var(--ok); } .dot.err { background: var(--err); } .dot.run { background: var(--run); animation: pulse 1.2s infinite; }
+@keyframes pulse { 50% { opacity: .35; } }
+main { padding: 28px 32px; max-width: 1400px; width: 100%; }
+h1 { font-size: 22px; margin: 0 0 4px; } .sub { color: var(--muted); margin: 0 0 22px; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 18px; }
+.card h2 { font-size: 15px; margin: 0 0 14px; }
+label { display: block; font-weight: 600; font-size: 13px; margin: 0 0 6px; }
+.hint { color: var(--muted); font-size: 12.5px; font-weight: 400; }
+.sp-image-previews { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 9px; }
+.sp-image-preview { width: 92px; position: relative; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: var(--panel2); }
+.sp-image-preview img { width: 100%; height: 76px; display: block; object-fit: cover; }
+.sp-image-preview button { width: 100%; border: 0; border-top: 1px solid var(--border); padding: 3px 5px; color: var(--err); background: var(--panel); cursor: pointer; font-size: 11px; }
+.sp-progress-card { border: 1px solid var(--border); background: var(--panel2); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+.sp-progress-rows { display: grid; gap: 6px; margin-top: 10px; }
+.sp-progress-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 8px; background: var(--panel); border-radius: 7px; }
+textarea, input[type=text], input[type=number], input[type=url], select { width: 100%; background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 9px; padding: 9px 11px; outline: none; }
+textarea:focus, input:focus, select:focus { border-color: var(--accent); }
+input[type=url] { color: #172033; background: #f7f9fc; border-color: #9aa8ba; }
+input[type=url]::placeholder { color: #5d6b80; opacity: 1; }
+textarea { min-height: 180px; resize: vertical; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.btn { border: 1px solid var(--border); background: var(--panel); padding: 8px 14px; border-radius: 9px; cursor: pointer; font-weight: 500; white-space: nowrap; }
+.btn:hover { background: var(--panel2); }
+.btn.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.danger { color: var(--err); }
+.btn.sm { padding: 4px 10px; font-size: 12.5px; }
+.btn:disabled { opacity: .5; cursor: default; }
+.seg { display: inline-flex; background: var(--panel2); border-radius: 9px; padding: 3px; }
+.seg button { border: 0; background: none; padding: 6px 12px; border-radius: 7px; cursor: pointer; }
+.seg button.on { background: var(--panel); box-shadow: var(--shadow); font-weight: 600; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
+tr.click { cursor: pointer; } tr.click:hover td { background: var(--panel2); }
+.badge { font-size: 12px; padding: 2px 9px; border-radius: 99px; font-weight: 600; white-space: nowrap; background: var(--panel2); }
+.b-queued { color: var(--muted); } .b-waiting { color: var(--warn); } .b-running { color: var(--run); } .b-done { color: var(--ok); }
+.b-no_video, .b-cancelled { color: var(--warn); } .b-failed { color: var(--err); }
+.ellip { max-width: 520px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.vcard { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; position: relative; }
+.vcard.sel { outline: 2px solid var(--accent); }
+.vthumb { aspect-ratio: 16/9; background: #000 center/cover; cursor: pointer; position: relative; }
+.vthumb::after { content: "▶"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 26px; opacity: 0; transition: .15s; background: rgba(0,0,0,.25); }
+.vthumb:hover::after { opacity: 1; }
+.vmeta { padding: 9px 11px; font-size: 12.5px; }
+.vmeta .t { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vmeta .m { color: var(--muted); }
+.vcheck { position: absolute; top: 8px; left: 8px; width: 20px; height: 20px; accent-color: var(--accent); }
+.vtag { position: absolute; top: 8px; right: 8px; font-size: 11px; background: rgba(0,0,0,.6); color: #fff; padding: 1px 7px; border-radius: 99px; }
+.vactions { display: flex; gap: 6px; padding: 0 11px 10px; }
+.order { display: grid; gap: 8px; }
+.oitem { display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel2); }
+.oitem img { width: 96px; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; background: #000; }
+.oitem .grow { flex: 1; min-width: 0; }
+.log { background: #0b0d10; color: #cfd6e0; border-radius: 10px; padding: 12px; font: 12px/1.6 ui-monospace, Menlo, monospace;
+  white-space: pre-wrap; max-height: 320px; overflow: auto; }
+.empty { color: var(--muted); text-align: center; padding: 40px 0; }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none; align-items: center; justify-content: center; z-index: 50; padding: 24px; }
+.modal.open { display: flex; }
+.modal-box { background: var(--panel); border-radius: 16px; width: min(900px, 100%); max-height: 92vh; overflow: auto; padding: 22px; }
+.modal video { width: 100%; border-radius: 10px; background: #000; max-height: 70vh; }
+.thgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 12px; }
+.thgrid img { width: 100%; border-radius: 8px; display: block; border: 1px solid var(--border); }
+.pvlyric { position: absolute; left: 6%; right: 6%; bottom: 6%; text-align: center; font: 700 clamp(13px, 3.2cqw, 30px)/1.3 Arial, sans-serif; color: #fff; pointer-events: none;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000; }
+.pvlyric span { display: inline-block; margin: 0 .14em; transition: transform .12s; }
+.pvlyric .sung { color: #ffd84d; }
+.pvlyric .act { color: #ffd84d; transform: scale(1.12); }
+.vers { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 14px; }
+.ver { border: 1px solid var(--border); border-radius: 10px; padding: 6px; display: flex; flex-direction: column; gap: 6px; }
+.ver.cur { border-color: var(--accent); }
+.modal .ver video { max-height: 220px; object-fit: contain; }
+.toast { position: fixed; bottom: 22px; right: 22px; background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px;
+  opacity: 0; transform: translateY(8px); transition: .2s; z-index: 60; max-width: 420px; }
+.toast.show { opacity: 1; transform: none; }
+.kv { display: grid; grid-template-columns: 140px 1fr; gap: 6px 12px; font-size: 13px; }
+.kv div:nth-child(odd) { color: var(--muted); }
+.warnbox { border-left: 3px solid var(--warn); background: var(--panel2); padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 14px; }
+.tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.tcard { text-align: left; background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 18px; cursor: pointer;
+  display: flex; flex-direction: column; gap: 6px; box-shadow: var(--shadow); }
+.tcard:hover { border-color: var(--accent); }
+.tcard.off { opacity: .5; cursor: default; } .tcard.off:hover { border-color: var(--border); }
+.ticon { font-size: 26px; }
+.steps { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+.step { border: 1px solid var(--border); background: var(--panel); border-radius: 99px; padding: 6px 14px 6px 6px; cursor: pointer; display: flex; gap: 8px; align-items: center; }
+.step b { width: 22px; height: 22px; border-radius: 50%; background: var(--panel2); display: grid; place-items: center; font-size: 12px; }
+.step.done b { background: var(--ok); color: #fff; }
+.step.on { border-color: var(--accent); font-weight: 600; } .step.on b { background: var(--accent); color: #fff; }
+.taskbar { padding: 12px 16px; }
+table.ly td, table.plan td { padding: 5px 4px; } table.ly input { padding: 5px 7px; }
+.agrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+.acard { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.acard.locked { border-color: var(--ok); }
+.pickcard { border: 2px solid transparent; border-radius: 14px; padding: 2px; }
+.pickcard.on { border-color: var(--accent); }
+.pickbar input { width: auto; margin: 0; }
+.pickbar { display: flex; align-items: center; gap: 8px; padding: 6px 8px; cursor: pointer; font-size: 13px; margin: 0; }
+.pickcard.on .pickbar { font-weight: 600; }
+.pthumb { width: 44px; height: 56px; border-radius: 6px; background: var(--panel) center/cover; border: 1px solid var(--border); display: inline-block; }
+.aimg { aspect-ratio: 1; background: var(--panel2) center/contain no-repeat; display: grid; place-items: center; color: var(--muted); position: relative; }
+.aimg.location { aspect-ratio: 16/9; background-size: cover; }
+.review { display: grid; grid-template-columns: minmax(280px, 380px) 1fr; gap: 16px; align-items: start; }
+.slist { display: grid; gap: 8px; max-height: 76vh; overflow: auto; padding-right: 4px; }
+.sitem { display: flex; gap: 10px; padding: 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+.sitem.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.sthumb { width: 96px; flex: none; aspect-ratio: 16/9; border-radius: 6px; background: #000 center/cover; position: relative; }
+.sthumb .vtag { top: 3px; right: 3px; font-size: 10px; }
+.sitem .grow { flex: 1; min-width: 0; }
+.ellip2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pv { position: sticky; top: 16px; }
+.pvstage { container-type: inline-size; position: relative; background: #000; border-radius: 12px; overflow: hidden; max-height: 70vh; margin: 0 auto; }
+.pvstage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; }
+.pvempty { position: absolute; inset: 0; display: grid; place-items: center; color: #aaa; }
+.pvbar { position: relative; display: flex; gap: 2px; height: 14px; margin-top: 10px; cursor: pointer; }
+.pvbar .seg { background: var(--panel2); border-radius: 3px; border: 1px solid var(--border); }
+.pvbar .seg.done { background: var(--ok); opacity: .7; } .pvbar .seg.failed { background: var(--err); opacity: .6; }
+.pvbar .seg.running, .pvbar .seg.queued { background: var(--run); opacity: .5; }
+.pvbar i { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--text); pointer-events: none; }
+.mdgrid { display: grid; grid-template-columns: minmax(260px, 380px) 1fr; gap: 16px; align-items: start; }
+.refvid { width: 100%; max-height: 70vh; background: #000; border-radius: 10px; display: block; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--border); background: var(--panel); border-radius: 99px; padding: 5px 12px; cursor: pointer; }
+.chip.on { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.aimg.portrait { aspect-ratio: 3/4; }
+.gshorts { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+.gshort .sthumb { border-radius: 8px; }
+.hidden { display: none !important; }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; }
+  aside { position: static; height: auto; flex-direction: row; flex-wrap: wrap; padding: 10px; }
+  .brand { width: 100%; padding-bottom: 6px; } .status-box { display: none; }
+  main { padding: 18px 16px; } .grid2, .review, .mdgrid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><i></i>Muse Video Studio</div>
+    <button class="nav active" data-tab="create">Tạo video</button>
+    <button class="nav" data-tab="queue">Hàng đợi <span class="count" id="qcount"></span></button>
+    <button class="nav" data-tab="library">Thư viện <span class="count" id="vcount"></span></button>
+    <button class="nav" data-tab="merge">Ghép video <span class="count" id="mcount"></span></button>
+    <button class="nav" data-tab="settings">Cài đặt</button>
+    <div class="status-box">
+      <div><span class="dot" id="login-dot"></span><span id="login-text">Chưa kiểm tra đăng nhập</span></div>
+      <div><span class="dot" id="worker-dot"></span><span id="worker-text">Rảnh</span></div>
+      <button class="btn sm" id="pause-btn">Tạm dừng hàng đợi</button>
+    </div>
+  </aside>
+
+  <main>
+    <!-- TẠO VIDEO -->
+    <section id="tab-create">
+      <div class="warnbox hidden" id="login-warn">Chưa đăng nhập Muse. Vào <b>Cài đặt</b> để đăng nhập hoặc dán cookie trước khi chạy.</div>
+      <div id="create-types">
+        <h1>Tạo video</h1>
+        <p class="sub">Chọn loại video muốn tạo.</p>
+        <div class="tgrid">
+          <button class="tcard" data-create="mv"><span class="ticon">🎵</span><b>MV âm nhạc</b>
+            <span class="hint">Từ file nhạc: Muse chép lời + timeline, viết kịch bản hoạt hình 2D, khoá nhân vật & bối cảnh, tạo từng short (có lip sync) rồi ghép thành MV.</span></button>
+          <button class="tcard" data-create="scriptvideo"><span class="ticon">📝</span><b>Tạo video theo kịch bản</b>
+            <span class="hint">Dán kịch bản, thiết kế nhân vật người que bằng ảnh tham chiếu, chia cảnh và tạo các short nối tiếp nhau.</span></button>
+          <button class="tcard" data-create="posebatch"><span class="ticon">🎬</span><b>Tạo hàng loạt video tạo dáng</b>
+            <span class="hint">Chọn số lượng video, tool tự lên kế hoạch: mỗi video 1 người mẫu, 1 bối cảnh, 1 bộ pose khác nhau. Muse vẽ & tạo chuyển động, tool tự dựng (có đoạn bấm Pose AI + 3 kiểu overlay).</span></button>
+          <button class="tcard" data-create="stickerman"><span class="ticon">🎨</span><b>Phim ngắn Sticker Man</b>
+            <span class="hint">Phim hoạt hình sticker man / doodle: tạo & đồng bộ nhân vật sticker xuyên suốt các cảnh, lên kịch bản phân cảnh, Muse vẽ & tạo chuyển động rồi dựng thành phim.</span></button>
+          <button class="tcard" data-create="prompt"><span class="ticon">✍️</span><b>Video từ prompt</b>
+            <span class="hint">Gửi 1 hoặc nhiều prompt, mỗi prompt Muse tạo 1 video.</span></button>
+          <button class="tcard" data-create="shortpromo"><span class="ticon">🛍️</span><b>Video affiliate / quy trình 1 phút</b>
+            <span class="hint">Chọn độ dài và số video; tự soạn cảnh quảng cáo sản phẩm hoặc nấu ăn, có chế độ nối cảnh trong cùng chat Muse.</span></button>
+          <div class="tcard off"><span class="ticon">📖</span><b>Truyện kể</b><span class="hint">Sắp có</span></div>
+        </div>
+      </div>
+      <div id="create-mv" class="hidden"></div>
+      <div id="create-posebatch" class="hidden"></div>
+      <div id="create-shortpromo" class="hidden">
+        <button class="btn sm back-types">← Loại video</button>
+        <h1 style="margin-top:10px">Video affiliate / quy trình</h1>
+        <p class="sub">Chọn thời lượng và số video. Tool chia mỗi video thành các cảnh khoảng 10 giây; sau khi tạo xong, chọn các clip trong Thư viện để ghép.</p>
+        <div class="seg" id="sp-local-tabs" style="margin-bottom:14px"><button class="on" data-sp-view="setup">Thiết lập</button><button data-sp-view="progress">Tiến trình</button></div>
+        <div class="card sp-local-pane" data-sp-pane="setup">
+          <div class="grid2">
+            <div><label for="sp-kind">Dạng video</label><select id="sp-kind"><option value="affiliate">Affiliate quảng cáo sản phẩm</option><option value="cooking">Quy trình nấu ăn / làm món</option></select></div>
+            <div id="sp-product-source" style="grid-column:1/-1"><div class="row" style="justify-content:space-between"><label>Danh sách sản phẩm <span class="hint">— mỗi link một sản phẩm, tối đa 10</span></label><button class="btn sm" id="sp-add-product">+ Thêm sản phẩm</button></div><div id="sp-products"></div><div class="row" style="justify-content:flex-end;gap:8px;margin-top:8px;flex-wrap:wrap"><button class="btn" id="sp-analyze">Muse phân tích tất cả sản phẩm song song</button><button class="btn" id="sp-get-product-images">Muse lấy ảnh tất cả sản phẩm</button></div><div class="hint" id="sp-analyze-status">Mỗi sản phẩm được xử lý trong chat riêng; thông tin và ảnh sẽ hiện trong thẻ link tương ứng.</div>
+              <label for="sp-images" style="margin-top:12px">Ảnh sản phẩm (tuỳ chọn)</label><input id="sp-images" type="file" accept="image/jpeg,image/png,image/webp" multiple><div id="sp-image-label" class="hint">Ảnh JPG, PNG hoặc WebP sẽ được gửi kèm để Muse tham khảo (tổng dung lượng tối đa 7 MB).</div><div id="sp-image-previews" class="sp-image-previews"></div>
+            </div>
+            <div id="sp-subject-wrap"><label for="sp-subject">Tên món ăn</label><input id="sp-subject" type="text" placeholder="Tên sản phẩm hoặc món ăn"></div>
+            <div id="sp-details-wrap" style="grid-column:1/-1"><label for="sp-details">Thông tin sản phẩm / nguyên liệu và cách làm</label><textarea id="sp-details" style="min-height:110px" placeholder="Dán kết quả Muse phân tích hoặc nhập thông tin sản phẩm. Với video nấu ăn, nhập nguyên liệu và các bước làm."></textarea></div>
+            <div><label for="sp-style">Phong cách hình ảnh</label><select id="sp-style"><option>UGC chân thực, quay điện thoại</option><option>Quảng cáo sản phẩm tối giản, ánh sáng đẹp</option><option>ASMR cận cảnh, không lời</option><option>Video nấu ăn nhanh, góc quay từ trên xuống</option><option>Hoạt hình 3D vui nhộn</option></select></div>
+            <div><label for="sp-script-style">Phong cách kịch bản</label><select id="sp-script-style"><option>Chân thực, gần gũi, tự nhiên</option><option>Hài hước, có tình huống bất ngờ</option><option>Kể chuyện ngắn, cảm xúc</option><option>Review nhanh, tập trung trải nghiệm</option><option>Giải thích rõ ràng, giàu thông tin</option><option>ASMR, tối giản lời thoại</option></select></div>
+            <div style="grid-column:1/-1"><label for="sp-idea">Chủ đề / mô tả kịch bản mong muốn</label><textarea id="sp-idea" style="min-height:80px" placeholder="Ví dụ: mở đầu bằng tình huống thường gặp, sau đó giới thiệu sản phẩm tự nhiên và kết thúc bằng lời kêu gọi nhẹ nhàng."></textarea></div>
+            <div><label for="sp-aspect">Tỷ lệ khung hình</label><select id="sp-aspect"><option value="9:16">9:16 dọc (TikTok / Reels / Shorts)</option><option value="16:9">16:9 ngang</option><option value="1:1">1:1 vuông</option></select></div>
+            <div><label for="sp-cta">Lời kêu gọi ở cuối</label><input id="sp-cta" type="text" placeholder="Ví dụ: Xem sản phẩm ở giỏ hàng / Lưu công thức để thử"></div>
+            <div><label for="sp-duration">Thời lượng mỗi video (giây)</label><input id="sp-duration" type="number" min="10" max="180" step="10" value="60"></div>
+            <div><label for="sp-count">Số video muốn tạo</label><input id="sp-count" type="number" min="1" max="20" step="1" value="1"></div>
+            <div><label for="sp-audio">Thiết kế âm thanh</label><select id="sp-audio"><option value="catchy">Nhạc nền bắt tai + tiếng bếp rõ</option><option value="voice">Lời dẫn cuốn hút + nhạc nền nhẹ</option><option value="asmr">ASMR: tiếng chế biến cận cảnh, không lời</option></select></div>
+          </div>
+          <label class="row" style="margin-top:14px;font-weight:500"><input id="sp-continuity" type="checkbox" checked style="width:auto"> Nối cảnh liên mạch: gửi cảnh theo thứ tự trong cùng một chat Muse để cảnh sau tiếp nối cảnh trước</label>
+          <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn primary" id="sp-muse-script">Nhờ Muse tạo kịch bản</button><button class="btn" id="sp-draft">Tạo / cập nhật kịch bản mẫu</button></div>
+          <div id="sp-cooking-script-wrap" style="margin-top:14px"><label for="sp-prompts">Kịch bản cảnh <span class="hint">— dán kịch bản Muse trả lời vào đây để kiểm tra/chỉnh sửa.</span></label><textarea id="sp-prompts" style="min-height:250px" placeholder="Dán kịch bản Muse tạo tại đây, hoặc tạo kịch bản mẫu."></textarea></div>
+          <div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn" id="sp-to-prompt">Chuyển sang màn hình nhờ Muse tạo video theo kịch bản</button></div>
+          <div class="row" style="justify-content:space-between;margin-top:14px"><span class="hint">Cảnh chạy tuần tự; khi bật nối cảnh, cùng một chat giữ ngữ cảnh giữa các cảnh.</span><button class="btn primary" id="sp-submit">Bắt đầu tạo video</button></div>
+        </div>
+        <div class="card sp-local-pane hidden" data-sp-pane="progress">
+          <h2>Tiến trình tạo từng short</h2>
+          <p class="hint">Theo dõi trạng thái từng cảnh trong mỗi video. Danh sách tự cập nhật khi Muse hoàn thành short.</p>
+          <div id="sp-sequence-list" class="order"><div class="empty">Đang tải danh sách video…</div></div>
+          <div id="sp-editor" class="hidden" style="margin-top:18px">
+            <div class="review">
+              <div><div id="sp-scene-list" class="slist" style="max-height:520px"></div></div>
+              <div class="pv"><div class="card" style="padding:10px"><video id="sp-preview" controls playsinline style="width:100%;max-height:65vh;background:#000;border-radius:8px"></video>
+                <div class="row" style="margin-top:10px"><button class="btn sm" id="sp-play-all">▶ Xem toàn bộ theo thứ tự</button><span id="sp-play-label" class="hint"></span></div></div>
+                <div class="card"><div class="grid2"><div><label for="sp-merge-aspect">Tỷ lệ video xuất</label><select id="sp-merge-aspect"><option value="9:16">9:16 dọc</option><option value="16:9">16:9 ngang</option><option value="1:1">1:1 vuông</option></select></div>
+                  <div><label for="sp-merge-xfade">Chuyển cảnh mờ (giây)</label><input id="sp-merge-xfade" type="number" min="0" max="2" step="0.1" value="0.3"></div>
+                  <div><label for="sp-merge-music">Nhạc nền xuyên suốt (tuỳ chọn)</label><input id="sp-merge-music" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.flac,.ogg"></div>
+                  <div><label for="sp-merge-volume">Âm lượng nhạc nền (%)</label><input id="sp-merge-volume" type="number" min="5" max="80" step="5" value="25"></div></div>
+                  <label class="row" style="margin-top:10px;font-weight:500"><input id="sp-keep-audio" type="checkbox" checked style="width:auto"> Giữ tiếng/lời dẫn do Muse tạo trong các clip</label>
+                  <button class="btn primary" id="sp-merge" style="margin-top:12px">Ghép các short theo thứ tự</button><div id="sp-merge-result" style="margin-top:12px"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="create-prompt" class="hidden">
+      <button class="btn sm back-types">← Loại video</button>
+      <h1 style="margin-top:10px">Video từ prompt</h1>
+      <p class="sub">Gửi prompt vào chat Muse, tool tự chờ và tải video về thư viện.</p>
+      <div class="card">
+        <div class="row" style="justify-content: space-between; margin-bottom: 12px;">
+          <div class="seg" id="mode-seg">
+            <button class="on" data-mode="single">1 prompt</button>
+            <button data-mode="batch">Nhiều prompt</button>
+          </div>
+          <label class="btn sm" style="margin:0">Nhập từ file .txt/.csv<input type="file" id="prompt-file" accept=".txt,.csv,.md" hidden></label>
+        </div>
+        <label for="prompt">Prompt <span class="hint" id="mode-hint">— mô tả video bạn muốn Muse tạo</span></label>
+        <textarea id="prompt" placeholder="Ví dụ: Tạo 3 clip 8 giây, nhân vật stick-man nét line đen trên nền trắng, cảnh 1: …"></textarea>
+        <div class="row" style="margin-top: 14px;">
+          <div style="flex: 1; min-width: 260px;">
+            <label for="target">Gửi vào</label>
+            <select id="target">
+              <option value="">Mặc định (theo Cài đặt)</option>
+              <option value="new">Chat mới cho mỗi job (khuyên dùng)</option>
+              <option value="https://muse.ai/">Chat chính muse.ai</option>
+              <option value="custom">Thread khác (dán URL)…</option>
+            </select>
+            <input type="text" id="target-custom" class="hidden" placeholder="https://muse.ai/thread/…" style="margin-top: 8px;">
+          </div>
+        </div>
+        <div class="row" style="margin-top: 18px; justify-content: space-between;">
+          <span class="hint" id="prompt-count"></span>
+          <button class="btn primary" id="submit">Thêm vào hàng đợi</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Mẹo</h2>
+        <div class="hint" style="font-size: 13px; line-height: 1.7">
+          • Muse tạo tối đa khoảng 6 clip × ~10 giây mỗi lượt. Kịch bản dài nên chia thành nhiều prompt.<br>
+          • Chế độ <b>Nhiều prompt</b>: mỗi dòng là 1 prompt, hoặc ngăn các prompt nhiều dòng bằng dòng <code>---</code>.<br>
+          • Mặc định mỗi job mở 1 chat mới trên Muse (ổn định nhất). Muốn giữ nhân vật đồng nhất thì chọn "Thread khác" và dán URL thread đã khóa nhân vật.<br>
+          • Các job chạy lần lượt; mỗi job có thể mất 5–15 phút tùy Muse.<br>
+          • Nếu Muse báo lỗi máy chủ (500/502), tool tự hẹn giờ thử lại và tạm ngưng các job khác — cứ để tool chạy.
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- HÀNG ĐỢI -->
+    <section id="tab-queue" class="hidden">
+      <div class="row" style="justify-content: space-between; align-items: flex-start;">
+        <div><h1>Hàng đợi</h1><p class="sub">Trạng thái các job gửi lên Muse.</p></div>
+      </div>
+      <div class="card" style="padding: 8px 12px;">
+        <table>
+          <thead><tr><th>#</th><th>Prompt</th><th>Trạng thái</th><th>Video</th><th>Thời gian</th><th></th></tr></thead>
+          <tbody id="jobs-body"></tbody>
+        </table>
+        <div class="empty hidden" id="jobs-empty">Chưa có job nào.</div>
+      </div>
+    </section>
+
+    <!-- THƯ VIỆN -->
+    <section id="tab-library" class="hidden">
+      <div class="row" style="justify-content: space-between; align-items: flex-start;">
+        <div><h1>Thư viện</h1><p class="sub">Video đã tải về. Chọn clip để ghép.</p></div>
+        <div class="row">
+          <div class="seg" id="lib-seg">
+            <button class="on" data-f="all">Tất cả</button><button data-f="clip">Clip</button><button data-f="merged">Đã ghép</button>
+          </div>
+          <label class="btn" style="margin:0">Nhập video<input type="file" id="import-file" accept="video/*" multiple hidden></label>
+          <button class="btn" id="open-folder">Mở thư mục</button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 14px;" id="sel-bar">
+        <span class="hint" id="sel-text">Chưa chọn clip nào</span>
+        <button class="btn sm" id="sel-clear">Bỏ chọn</button>
+        <button class="btn sm primary" id="sel-merge">Ghép các clip đã chọn →</button>
+      </div>
+      <div class="vgrid" id="vgrid"></div>
+      <div class="empty hidden" id="lib-empty">Chưa có video. Tạo video ở tab đầu tiên hoặc bấm "Nhập video".</div>
+    </section>
+
+    <!-- GHÉP -->
+    <section id="tab-merge" class="hidden">
+      <h1>Ghép video</h1>
+      <p class="sub">Sắp xếp thứ tự, chọn khung hình và chuyển cảnh, thêm nhạc nền.</p>
+      <div class="grid2">
+        <div class="card">
+          <h2>Thứ tự clip</h2>
+          <div class="order" id="order"></div>
+          <div class="empty hidden" id="order-empty">Chọn clip ở tab Thư viện trước.</div>
+          <div class="hint" style="margin-top: 10px;" id="order-total"></div>
+        </div>
+        <div class="card">
+          <h2>Tuỳ chọn</h2>
+          <div style="display: grid; gap: 14px;">
+            <div><label for="m-name">Tên file</label><input type="text" id="m-name" placeholder="video_hoan_chinh"></div>
+            <div><label for="m-aspect">Khung hình</label>
+              <select id="m-aspect"><option value="16:9">16:9 — 1280×720</option><option value="1080p">16:9 — 1920×1080</option>
+                <option value="9:16">9:16 — 720×1280 (Shorts/TikTok)</option><option value="1:1">1:1 — 1080×1080</option></select></div>
+            <div><label for="m-xfade">Chuyển cảnh mờ dần (giây) <span class="hint">— 0 = nối thẳng</span></label>
+              <input type="number" id="m-xfade" min="0" max="2" step="0.1" value="0"></div>
+            <div class="row"><input type="checkbox" id="m-audio" checked><label for="m-audio" style="margin:0">Giữ âm thanh gốc của clip</label></div>
+            <div><label for="m-music">Nhạc nền <span class="hint">— tuỳ chọn, tự lặp cho đủ dài</span></label>
+              <input type="file" id="m-music" accept="audio/*"></div>
+            <div><label for="m-vol">Âm lượng nhạc: <span id="m-vol-v">30%</span></label>
+              <input type="range" id="m-vol" min="0" max="100" value="30" style="width: 100%"></div>
+            <button class="btn primary" id="m-go">Ghép video</button>
+            <div id="m-result"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÀI ĐẶT -->
+    <section id="tab-settings" class="hidden">
+      <h1>Cài đặt</h1>
+      <p class="sub">Đăng nhập Muse và tuỳ chỉnh cách tool chạy.</p>
+      <div class="card">
+        <h2>Đăng nhập Muse</h2>
+        <div class="row" style="margin-bottom: 14px;">
+          <span><span class="dot" id="login-dot2"></span><span id="login-text2">Chưa kiểm tra</span></span>
+          <button class="btn sm" id="login-check">Kiểm tra</button>
+          <button class="btn sm" id="login-open">Mở Chrome để đăng nhập</button>
+          <button class="btn sm primary hidden" id="login-done">Tôi đã đăng nhập xong</button>
+        </div>
+        <h3 style="margin: 4px 0 8px; font-size: 14px;">Tài khoản Muse</h3>
+        <div id="accounts" style="margin-bottom: 14px;"></div>
+        <label for="cookies">Đăng nhập / thêm tài khoản bằng cookie JSON <span class="hint">— export bằng extension Cookie-Editor khi đang ở muse.ai</span></label>
+        <textarea id="cookies" style="min-height: 110px" placeholder='[{"domain": ".muse.ai", "name": "hatch_sess", ...}]'></textarea>
+        <div class="row" style="margin-top: 10px; justify-content: space-between;">
+          <input type="text" id="acc-name" placeholder="Tên tài khoản (tuỳ chọn, trùng tên = cập nhật cookie)" style="flex: 1; min-width: 200px;">
+          <button class="btn primary" id="cookies-save">Đăng nhập bằng cookie</button>
+        </div>
+        <p class="hint" style="margin-top: 8px;">Cookie được lưu riêng trên máy này (thư mục <code>secrets/</code>). Đổi tài khoản khi đang chạy job thì job sau mới dùng tài khoản mới.</p>
+      </div>
+      <div class="card">
+        <h2>Cách chạy</h2>
+        <div class="grid2">
+          <div><label for="s-target">Gửi vào <span class="hint">— <code>new</code> = mỗi job 1 chat mới (khuyên dùng), hoặc dán URL chat/thread</span></label><input type="text" id="s-target"></div>
+          <div><label for="s-headless">Trình duyệt</label>
+            <select id="s-headless"><option value="1">Chạy ẩn (headless)</option><option value="0">Hiện cửa sổ Chrome để theo dõi</option></select></div>
+          <div><label for="s-timeout">Thời gian chờ tối đa mỗi job (phút)</label><input type="number" id="s-timeout" min="3" max="120"></div>
+          <div><label for="s-grace">Muse im lặng bao lâu thì coi là xong (giây)</label><input type="number" id="s-grace" min="20" max="900"></div>
+          <div><label for="s-delay">Nghỉ giữa các job (giây)</label><input type="number" id="s-delay" min="0" max="600"></div>
+          <div><label for="s-retry">Tự gửi lại khi không có video (lần)</label><input type="number" id="s-retry" min="0" max="5"></div>
+          <div><label for="s-swait">Muse lỗi máy chủ: chờ trước khi thử lại (phút) <span class="hint">— tăng gấp đôi mỗi lần, tối đa 60</span></label><input type="number" id="s-swait" min="1" max="60"></div>
+          <div><label for="s-smax">Muse lỗi máy chủ: số lần hẹn thử lại tối đa</label><input type="number" id="s-smax" min="0" max="30"></div>
+        </div>
+        <div style="margin-top: 14px;"><label for="s-suffix">Câu thêm vào cuối mỗi prompt</label>
+          <input type="text" id="s-suffix"></div>
+        <div class="row" style="margin-top: 16px; justify-content: flex-end;"><button class="btn primary" id="s-save">Lưu cài đặt</button></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box" id="modal-box"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const STATUS = {queued: 'Đang chờ', waiting: 'Chờ Muse hết lỗi', running: 'Đang chạy', done: 'Xong', no_video: 'Không có video', failed: 'Lỗi', cancelled: 'Đã huỷ'};
+const PHASE = {idle: 'Rảnh', starting: 'Đang mở trình duyệt', sending: 'Đang gửi prompt', waiting: 'Đang chờ Muse tạo video',
+               downloading: 'Đang tải video', analyzing: 'Muse đang phân tích / viết kịch bản', login: 'Đang chờ bạn đăng nhập', mv: 'Đang làm MV'};
+let S = {jobs: [], worker: {}, settings: {}};
+let videos = [];
+let selected = JSON.parse(localStorageGet('sel') || '[]');
+let libFilter = 'all', mode = 'single', openJob = null;
+
+function localStorageGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function localStorageSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+async function api(path, opts = {}) {
+  const o = {...opts};
+  if (o.json !== undefined) { o.method = o.method || 'POST'; o.headers = {'Content-Type': 'application/json'}; o.body = JSON.stringify(o.json); }
+  const r = await fetch(path, o);
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    if (r.status === 404 && path.startsWith('/api/sequences'))
+      throw new Error('Máy chủ đang chạy phiên bản cũ, chưa có API cho chuỗi cảnh. Hãy tắt hẳn Muse Video Studio rồi mở lại bằng start.command.');
+    if (r.status === 404 && path.startsWith('/api/muse/'))
+      throw new Error('Máy chủ Muse Video Studio chưa nạp API phân tích link. Hãy thoát hẳn ứng dụng rồi mở lại bằng start.command.');
+    throw new Error(data.detail || `Lỗi ${r.status}`);
+  }
+  return data;
+}
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 3500); }
+const fmtDur = s => s ? (s >= 60 ? `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}` : `${s.toFixed(1)}s`) : '–';
+const fmtTime = t => t ? new Date(t * 1000).toLocaleString('vi-VN', {hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit'}) : '';
+const fmtClock = t => t ? new Date(t * 1000).toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'}) : '';
+const fmtSize = b => b ? (b > 1e6 ? (b / 1e6).toFixed(1) + ' MB' : Math.round(b / 1e3) + ' KB') : '';
+
+// ---------- tabs ----------
+function showTab(name) {
+  const isSameTab = localStorageGet('tab') === name;
+  $$('.nav').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  $$('main > section').forEach(s => s.classList.toggle('hidden', s.id !== 'tab-' + name));
+  if (name === 'create') {
+    if (isSameTab && typeof showCreate === 'function') {
+      showCreate('types');
+    }
+  }
+  if (name === 'library') loadVideos();
+  if (name === 'merge') loadVideos().then(renderOrder);
+  window.scrollTo({top: 0, behavior: 'instant'});
+  localStorageSet('tab', name);
+}
+$$('.nav').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+
+// ---------- tạo ----------
+function parsePrompts() {
+  const raw = $('#prompt').value.trim();
+  if (!raw) return [];
+  if (mode === 'single') return [raw];
+  if (/^\s*---\s*$/m.test(raw)) return raw.split(/^\s*---\s*$/m).map(s => s.trim()).filter(Boolean);
+  return raw.split('\n').map(s => s.trim()).filter(Boolean);
+}
+function updateCount() {
+  const n = parsePrompts().length;
+  $('#prompt-count').textContent = n ? `${n} prompt sẽ được thêm vào hàng đợi` : '';
+}
+$$('#mode-seg button').forEach(b => b.onclick = () => {
+  mode = b.dataset.mode;
+  $$('#mode-seg button').forEach(x => x.classList.toggle('on', x === b));
+  $('#mode-hint').textContent = mode === 'single' ? '— mô tả video bạn muốn Muse tạo' : '— mỗi dòng 1 prompt, hoặc ngăn bằng dòng ---';
+  updateCount();
+});
+$('#prompt').oninput = () => { delete $('#prompt').dataset.shortSequences; updateCount(); };
+$('#target').onchange = () => $('#target-custom').classList.toggle('hidden', $('#target').value !== 'custom');
+$('#prompt-file').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  let text = await f.text();
+  if (f.name.endsWith('.csv')) text = text.split('\n').map(l => l.split(',')[0].replace(/^"|"$/g, '')).filter(l => l && !/^prompt$/i.test(l)).join('\n');
+  $('#prompt').value = text;
+  delete $('#prompt').dataset.shortSequences;
+  $$('#mode-seg button')[1].click();
+  e.target.value = '';
+};
+$('#submit').onclick = async () => {
+  let linkedSequences = null;
+  try { linkedSequences = JSON.parse($('#prompt').dataset.shortSequences || 'null'); } catch (_) {}
+  if (linkedSequences?.length) {
+    try {
+      const r = await api('/api/sequences', {json: {continuity: true, single_chat: linkedSequences.every(x => x.length <= 6), attachments: await shortPromoAttachments(), videos: linkedSequences.map((prompts, i) => ({title: `Video affiliate ${i + 1}`, prompts}))}});
+      toast(`Đã thêm ${linkedSequences.length} chuỗi video (${r.job_ids.length} cảnh) vào hàng đợi`);
+      $('#prompt').value = ''; delete $('#prompt').dataset.shortSequences; updateCount(); refresh();
+      showTab('create'); showCreate('shortpromo'); setShortPromoView('progress');
+    } catch (e) { toast(e.message); }
+    return;
+  }
+  const prompts = parsePrompts();
+  if (!prompts.length) return toast('Nhập prompt trước đã');
+  let target = $('#target').value;
+  if (target === 'custom') {
+    target = $('#target-custom').value.trim();
+    if (!/^https:\/\/(www\.)?muse\.ai\//.test(target)) return toast('URL thread phải bắt đầu bằng https://muse.ai/');
+  }
+  try {
+    const r = await api('/api/jobs', {json: {prompts, target_url: target || null}});
+    toast(`Đã thêm ${r.ids.length} job vào hàng đợi`);
+    $('#prompt').value = ''; updateCount();
+    refresh(); showTab('queue');
+  } catch (e) { toast(e.message); }
+};
+
+// ---------- video affiliate / quy trình khoảng 1 phút ----------
+function shortPromoPrompts() {
+  const kind = $('#sp-kind').value;
+  if (kind === 'affiliate') return toast('Với video affiliate, hãy tạo kịch bản riêng cho từng sản phẩm bằng nút Nhờ Muse tạo kịch bản.');
+  const details = $('#sp-details').value.trim();
+  const subject = kind === 'cooking' ? $('#sp-subject').value.trim() : (details.split(/[\n,;|]/).map(x => x.trim()).find(Boolean) || 'sản phẩm theo thông tin đã phân tích');
+  if (!subject || (kind === 'affiliate' && !details)) { toast(kind === 'cooking' ? 'Nhập tên món ăn trước' : 'Hãy nhập hoặc dán thông tin sản phẩm đã phân tích'); return; }
+  const style = $('#sp-style').value, aspect = $('#sp-aspect').value;
+  const duration = Math.max(10, Math.min(180, Math.round((+$('#sp-duration').value || 60) / 10) * 10));
+  const videoCount = Math.max(1, Math.min(20, Math.round(+$('#sp-count').value || 1)));
+  $('#sp-duration').value = duration; $('#sp-count').value = videoCount;
+  const sceneCount = duration / 10;
+  const cta = $('#sp-cta').value.trim() || (kind === 'affiliate' ? 'Xem sản phẩm ở giỏ hàng.' : 'Lưu công thức để làm thử.');
+  const scenes = kind === 'affiliate' ? [
+    'Mở đầu bằng một vấn đề/tình huống thường gặp và câu móc ngắn; cùng một người dẫn xuất hiện, cầm đúng sản phẩm. Không mở hộp hoặc dùng sản phẩm trước khi giới thiệu.',
+    'Giới thiệu sản phẩm đang cầm: quay cận mặt trước, cạnh và chất liệu nhìn thấy được; giữ nguyên màu sắc, hình dáng và bao bì giữa các góc.',
+    'Người dẫn bắt đầu thao tác sử dụng đúng cách; cho thấy các bước tay rõ ràng, không đổi sản phẩm hoặc nhảy thẳng tới kết quả.',
+    'Tiếp tục đúng thao tác ở cảnh trước, làm nổi bật một ưu điểm đã được cung cấp bằng hình ảnh thực tế; không thêm thông số hay lời hứa hiệu quả.',
+    'Cho thấy kết quả sử dụng hợp lý trong cùng bối cảnh; người dẫn tóm tắt đúng thông tin đã nêu, không giả làm khách hàng hoặc bịa đánh giá.',
+    `Kết thúc bằng cận cảnh sản phẩm trong tay người dẫn, giữ khung hình ổn định và nói nguyên văn lời kêu gọi: “${cta}”.`
+  ] : [
+    'BẮT ĐẦU QUY TRÌNH: cùng một đầu bếp bày nguyên liệu sống theo danh sách trên mặt bàn sạch; giới thiệu món bằng một câu móc khi tay bắt đầu lấy nguyên liệu. Chưa có món chín trong khung hình.',
+    'SƠ CHẾ: dùng chính nguyên liệu vừa lấy ở cảnh trước; rửa, để ráo rồi cắt/đập/bóc theo đúng món. Cho phần đã sơ chế vào chiếc bát đã thấy từ đầu; kết cảnh bằng cách đặt bát cạnh bếp.',
+    'CHUẨN BỊ NẤU: tiếp tục với bát nguyên liệu và chiếc chảo/nồi đã đặt cạnh bếp; làm nóng chảo rồi thêm dầu/gia vị chỉ khi có trong danh sách. Kết cảnh khi chảo sẵn sàng nhận nguyên liệu.',
+    'NẤU CHÍNH: đổ đúng nguyên liệu đã sơ chế từ bát vào chảo đang nóng; quay rõ thao tác và sự thay đổi màu/kết cấu. Không làm nguyên liệu chín tức thì, không đổi chảo hoặc đổi bếp.',
+    'HOÀN THIỆN: tiếp tục nấu phần thức ăn đang ở trong chảo; nêm theo thông tin người dùng cung cấp, đảo đến độ chín hợp lý. Kết cảnh bằng động tác tắt bếp và cầm chảo/đũa để chuẩn bị dọn.',
+    `DỌN MÓN & KẾT: dùng chính thức ăn vừa nấu, chuyển từ chảo sang đĩa/tô đã đặt sẵn; chỉ thêm trang trí nếu nguyên liệu có nêu. Quay cận món hoàn chỉnh, nói lời kết: “${cta}”.`
+  ];
+  const recipeBank = ['mì trộn trứng chiên', 'cơm chiên trứng rau củ', 'bánh pancake chuối', 'gà áp chảo sốt mật ong',
+    'sandwich trứng phô mai', 'salad gà xé', 'khoai tây lắc phô mai', 'đậu hũ sốt cà chua', 'bún trộn thịt nướng',
+    'trứng cuộn rau củ', 'mì xào rau củ', 'sữa chua trái cây', 'canh cà chua trứng', 'bánh mì bơ tỏi',
+    'cá hồi áp chảo', 'cuốn rau củ chấm sốt', 'cháo gà nấm', 'nấm đùi gà nướng', 'bánh tráng trộn', 'ngô xào bơ'];
+  const genericCooking = kind === 'cooking' && /^(nấu ăn|món ăn|món ngon|ẩm thực|cooking|recipe|món nhanh)$/i.test(subject);
+  const angles = kind === 'cooking'
+    ? ['móc câu bằng lời nói khi bày nguyên liệu, vẫn giữ đúng trình tự nấu', 'nhấn vào thao tác tay gọn nhưng không bỏ bước',
+       'tập trung vào kết cấu và âm thanh nấu nướng đúng lúc', 'gợi tò mò về mẹo sơ chế nhưng không đổi quy trình',
+       'nhấn vào cách trình bày đẹp ở cảnh dọn món cuối', 'kể như một công thức dễ làm tại nhà']
+    : ['mở bằng một tình huống cần giải quyết', 'nhấn vào thao tác sử dụng nhanh và rõ',
+       'tập trung vào chất liệu và chi tiết sản phẩm nhìn thấy được', 'mở bằng câu hỏi ngắn rồi giải đáp bằng demo',
+       'nhấn vào kết quả sử dụng thực tế', 'lời giới thiệu trực tiếp, chân thật của người dẫn'];
+  const scripts = [];
+  for (let v = 0; v < videoCount; v++) {
+    const videoSubject = genericCooking ? recipeBank[v % recipeBank.length] : subject;
+    const foley = kind === 'cooking'
+      ? 'tiếng rửa, thái, đặt bát, tiếng xèo và đảo chảo khớp hình'
+      : 'tiếng mở hộp, chạm nút, đặt sản phẩm và thao tác sử dụng khớp hình';
+    const audioMode = $('#sp-audio').value;
+    const audio = audioMode === 'asmr'
+      ? `ÂM THANH ASMR: không nhạc, không lời dẫn; thu tiếng thật gần và rõ (${foley}). Giữ cùng âm sắc phòng/không gian, không để tiếng đột ngột mất hoặc đổi cảnh âm thanh.`
+      : audioMode === 'voice'
+        ? `ÂM THANH: cùng một giọng người dẫn tiếng Việt ở mọi cảnh, phát âm rõ, thân thiện, nhịp nói nhanh gọn; một câu ngắn mỗi cảnh. Nhạc nền nhẹ, không lời, cùng nhịp/âm sắc/âm lượng xuyên suốt; lời nói luôn rõ hơn nhạc. Thêm ${foley} nhỏ đúng lúc, tạo cầu âm thanh sang cảnh sau.`
+        : `ÂM THANH BẮT TAI: nhạc nền instrumental vui, hiện đại, nhịp đều khoảng 105–115 BPM, hook nhạc rõ từ giây đầu và tiếp tục cùng nhịp/nhạc cụ/âm lượng ở mọi cảnh; không đổi bài giữa short. Thêm ${foley} sạch, rõ, nhấn nhẹ vào nhịp chuyển cảnh. Lời dẫn tiếng Việt tối đa một câu ngắn mỗi cảnh, cùng một giọng; hạ nhạc khi có lời, không chồng lấn hoặc ngắt cụt.`;
+    const identity = kind === 'cooking'
+      ? 'KHÓA NHÂN VẬT & BỐI CẢNH: chỉ một đầu bếp Việt Nam trưởng thành xuyên suốt, tóc đen buộc gọn, áo màu kem, tạp dề xanh lá đậm; giữ nguyên gương mặt, tuổi, tóc, trang phục, tông da và bàn tay. Một căn bếp gia đình duy nhất, mặt bàn gỗ sáng, bếp và chảo/nồi giống hệt nhau, ánh sáng ấm ổn định. Nếu chỉ quay góc từ trên xuống thì chỉ lộ cùng đôi tay, ống tay áo kem và tạp dề xanh; không đổi người quay/đôi tay.'
+      : 'KHÓA NHÂN VẬT & SẢN PHẨM: chọn một người dẫn trưởng thành với diện mạo và trang phục cụ thể ngay cảnh đầu, sau đó giữ chính xác gương mặt, tóc, giọng, trang phục và bối cảnh ở mọi cảnh. Sản phẩm duy nhất là đúng món đã mô tả; giữ nguyên kích thước, hình dáng, màu, chi tiết và bao bì, không tự tạo phiên bản khác.';
+    const scenePlan = sceneCount <= scenes.length
+      ? Array.from({length: sceneCount}, (_, i) => {
+          const from = Math.floor(i * scenes.length / sceneCount);
+          const to = Math.floor((i + 1) * scenes.length / sceneCount);
+          return scenes.slice(from, Math.max(from + 1, to)).join(' THEN, ');
+        })
+      : [...scenes.slice(0, -1), ...Array(sceneCount - scenes.length).fill('CHI TIẾT BỔ SUNG: tiếp tục đúng trạng thái hiện tại, quay cận thao tác thực tế và kết cấu đang thay đổi; không tua lại, không thêm nguyên liệu hoặc đạo cụ mới.'), scenes[scenes.length - 1]];
+    const prompts = [];
+    for (let i = 0; i < sceneCount; i++) {
+    const productImageRule = kind === 'affiliate' && spProductImageFiles.size
+      ? 'ẢNH SẢN PHẨM THAM CHIẾU ĐÍNH KÈM: dùng ảnh thật được gửi kèm làm chuẩn trực quan cho sản phẩm trong cảnh; giữ đúng hình dáng, màu, nhãn và bao bì, không thay bằng món hàng tương tự hoặc tự thiết kế lại. Nếu có nhiều ảnh, chọn đúng sản phẩm được mô tả trong cảnh.' : '';
+    const common = `Tạo đúng 1 short khoảng 10 giây, tỷ lệ ${aspect}, phong cách ${style}. Đây là cảnh ${i + 1}/${sceneCount}, tương ứng giây ${i * 10}–${(i + 1) * 10} trong video ${v + 1}/${videoCount} dài khoảng ${duration} giây. Chủ đề: ${videoSubject}. Góc khai thác: ${angles[v % angles.length]}. Dùng nguyên liệu/thông tin sau làm nguồn chính: ${details || 'không tự bịa thành phần, số lượng, thông số, giá hoặc công dụng'}. ${identity} ${productImageRule} Hành động chậm vừa đủ để đọc được; một hành động chính, cận cảnh tay và vật đang thao tác, không montage ngẫu nhiên. Không tạo chữ, phụ đề, logo hay watermark đọc được. ${audio}`;
+      const continuity = $('#sp-continuity').checked
+        ? i === 0
+          ? `CẢNH THIẾT LẬP: đây là cảnh đầu, chưa có cảnh tham chiếu. Thiết lập rõ diện mạo người dẫn, căn bếp, mặt bàn, dụng cụ, ánh sáng, bố cục và âm sắc để các cảnh sau giữ đúng. Bắt đầu từ nguyên liệu sống/đóng gói như mô tả, không cho thấy bước làm đã hoàn tất.`
+          : `NỐI HÌNH ẢNH: trong cùng chat, dùng video cảnh ngay trước làm hình tham chiếu trực tiếp. Mở đúng trạng thái cuối cảnh trước: cùng vị trí tay, nguyên liệu, dụng cụ, mức chín, hướng sáng và bố cục. Tiếp tục đúng bước kế tiếp, không bắt đầu lại, không nhảy thời gian, không làm nguyên liệu sống xuất hiện lại sau khi đã nấu. Kết ở trạng thái cụ thể để cảnh kế tiếp tiếp tục được. NỐI ÂM THANH: giữ nguyên nhạc/giọng/không gian như cảnh trước; để âm thanh thao tác hoặc nhịp nhạc chạy qua điểm cắt, không fade đột ngột.`
+        : `Giữ chặt khóa nhân vật, bối cảnh, sản phẩm/nguyên liệu và thiết kế âm thanh nêu trên trong toàn bộ chuỗi cảnh.`;
+      const sceneText = `Cảnh ${i + 1}/${sceneCount} — ${scenePlan[i]}${i === sceneCount - 1 ? ` ${kind === 'affiliate' ? `Kết bằng lời kêu gọi: “${cta}”.` : `Kết bằng lời mời: “${cta}”.`}` : ''}`;
+      prompts.push(`${common}\n\n${continuity}\n\nHÀNH ĐỘNG CẢNH NÀY: ${sceneText}\n\nQUY TẮC LIỀN MẠCH: không đổi người, trang phục, bếp, dụng cụ, nhiệt độ/độ chín; không nhảy bước, không teleport đạo cụ, không lặp lại thao tác đã hoàn tất. Chuyển động máy có chủ đích, kết thúc ở trạng thái dễ nối sang cảnh kế tiếp.`);
+    }
+    scripts.push(prompts);
+  }
+  $('#sp-prompts').value = scripts.map((prompts, i) => `=== VIDEO ${i + 1} ===\n${prompts.join('\n\n---\n\n')}`).join('\n\n');
+  $('#sp-prompts').dataset.videoCount = String(videoCount);
+  $('#sp-prompts').dataset.sceneCount = String(sceneCount);
+  $('#sp-submit').textContent = `Bắt đầu tạo ${videoCount} video (${videoCount * sceneCount} cảnh)`;
+  toast(`Đã soạn ${videoCount} kịch bản, ${sceneCount} cảnh mỗi video.`);
+}
+$('#sp-draft').onclick = shortPromoPrompts;
+function setShortPromoView(view) {
+  $$('#sp-local-tabs [data-sp-view]').forEach(b => b.classList.toggle('on', b.dataset.spView === view));
+  $$('#create-shortpromo [data-sp-pane]').forEach(p => p.classList.toggle('hidden', p.dataset.spPane !== view));
+  if (view === 'progress') loadShortPromoSequences();
+}
+$$('#sp-local-tabs [data-sp-view]').forEach(b => b.onclick = () => setShortPromoView(b.dataset.spView));
+$('#sp-to-prompt').onclick = () => {
+  const raw = $('#sp-prompts').value.trim();
+  if (!raw) return toast('Dán kịch bản Muse vào ô Kịch bản cảnh trước');
+  const groups = raw.split(/^=== VIDEO .* ===\s*$/m).slice(1).map(g => g.split(/^\s*---\s*$/m).map(s => s.trim()).filter(Boolean));
+  const sequences = groups.length ? groups : [[raw]];
+  $('#prompt').dataset.shortSequences = JSON.stringify(sequences);
+  $('#prompt').value = sequences.flat().join('\n\n---\n\n');
+  $$('#mode-seg button').find(b => b.dataset.mode === 'batch').click();
+  showCreate('prompt');
+  updateCount();
+  toast('Kịch bản đã chuyển sang màn hình tạo video từ prompt. Kiểm tra rồi bấm Thêm vào hàng đợi.');
+};
+function updateShortPromoKind() {
+  const cooking = $('#sp-kind').value === 'cooking';
+  $('#sp-product-source').classList.toggle('hidden', cooking);
+  $('#sp-subject-wrap').classList.toggle('hidden', !cooking);
+  $('#sp-subject-wrap').style.gridColumn = cooking ? '' : '1/-1';
+  $('#sp-details-wrap').classList.toggle('hidden', !cooking);
+  $('#sp-cooking-script-wrap').classList.toggle('hidden', !cooking);
+  $('#sp-draft').classList.toggle('hidden', !cooking);
+  $('#sp-to-prompt').classList.toggle('hidden', !cooking);
+  $('#sp-count').closest('div').classList.toggle('hidden', !cooking);
+  $('#sp-details-wrap label').textContent = 'Nguyên liệu và các bước làm';
+  $('#sp-details').placeholder = 'Nhập nguyên liệu, lượng nếu biết, gia vị và thứ tự làm.';
+  $('#sp-muse-script').textContent = cooking ? 'Nhờ Muse tạo kịch bản' : 'Nhờ Muse tạo kịch bản cho từng sản phẩm';
+}
+$('#sp-kind').onchange = updateShortPromoKind;
+updateShortPromoKind();
+let spImageFiles = [];
+const spProductImageFiles = new Map();
+let spProducts = [{id: 1, name: '', url: '', details: '', script: '', image: null, imageStatus: '', analysisStatus: '', scriptStatus: ''}];
+let spNextProductId = 2;
+function spNewProduct() { return {id: spNextProductId++, name: '', url: '', details: '', script: '', image: null, imageStatus: '', analysisStatus: '', scriptStatus: ''}; }
+function spProductRows() { return $$('#sp-products .sp-product-card'); }
+function spGetProductInputs() {
+  for (const card of spProductRows()) {
+    const p = spProducts.find(x => x.id === +card.dataset.id); if (!p) continue;
+    p.name = card.querySelector('.sp-product-name')?.value.trim() ?? p.name;
+    p.url = card.querySelector('.sp-product-url').value.trim();
+    p.details = card.querySelector('.sp-product-details')?.value.trim() ?? p.details;
+    p.script = card.querySelector('.sp-product-script')?.value.trim() ?? p.script;
+  }
+  return spProducts;
+}
+function renderSpProducts() {
+  const root = $('#sp-products');
+  root.innerHTML = spProducts.map((p, i) => {
+    const showAnalysis = Boolean(p.details || p.name);
+    const showScript = Boolean(p.script);
+    return `<div class="card sp-product-card" data-id="${p.id}" style="margin:10px 0;padding:12px">
+    <div class="row" style="justify-content:space-between;align-items:center"><b>Sản phẩm ${i + 1}</b><button class="btn sm danger" data-sp-remove="${p.id}" ${spProducts.length <= 1 ? 'disabled title="Cần ít nhất một sản phẩm"' : ''}>Xoá</button></div>
+    <div style="margin-top:8px"><label>Link sản phẩm</label><input class="sp-product-url" type="url" value="${esc(p.url)}" placeholder="https://…"></div>
+    ${p.imageStatus ? `<div class="hint" style="margin-top:8px">${esc(p.imageStatus === 'loading' ? 'Muse đang lấy ảnh sản phẩm…' : p.imageStatus)}</div>` : ''}
+    ${p.image ? `<div class="row" style="gap:10px;margin-top:8px"><img src="${URL.createObjectURL(p.image)}" onload="URL.revokeObjectURL(this.src)" style="width:88px;height:88px;object-fit:contain;border:1px solid var(--border);border-radius:8px"><button class="btn sm danger" data-sp-remove-image="${p.id}">Xoá ảnh</button></div>` : ''}
+    ${showAnalysis ? `<label style="margin-top:10px">Tên sản phẩm</label><input class="sp-product-name" type="text" value="${esc(p.name)}" placeholder="Tên sản phẩm"><label style="margin-top:10px">Thông tin sản phẩm <span class="hint">${p.analysisStatus ? `— ${esc(p.analysisStatus)}` : ''}</span></label><textarea class="sp-product-details" style="min-height:90px;font-family:inherit" placeholder="Thông tin sản phẩm do Muse phân tích">${esc(p.details)}</textarea>` : ''}
+    ${showScript ? `<label style="margin-top:10px">Kịch bản video sản phẩm <span class="hint">${p.scriptStatus ? `— ${esc(p.scriptStatus)}` : ''}</span></label><textarea class="sp-product-script" style="min-height:150px;font-family:inherit">${esc(p.script)}</textarea>` : ''}
+  </div>`;
+  }).join('');
+  for (const card of spProductRows()) {
+    const p = spProducts.find(x => x.id === +card.dataset.id);
+    card.querySelector('.sp-product-url').oninput = e => p.url = e.target.value;
+    card.querySelector('.sp-product-name')?.addEventListener('input', e => p.name = e.target.value);
+    card.querySelector('.sp-product-details')?.addEventListener('input', e => p.details = e.target.value);
+    card.querySelector('.sp-product-script')?.addEventListener('input', e => p.script = e.target.value);
+    card.querySelector('[data-sp-remove]').onclick = () => {
+      if (p.image) spProductImageFiles.delete(p.image);
+      spProducts = spProducts.filter(x => x.id !== p.id); renderSpProducts();
+    };
+    card.querySelector('[data-sp-remove-image]')?.addEventListener('click', () => {
+      if (p.image) spProductImageFiles.delete(p.image);
+      p.image = null; p.imageStatus = ''; renderSpProducts();
+    });
+  }
+}
+$('#sp-add-product').onclick = () => {
+  if (spProducts.length >= 10) return toast('Tối đa 10 sản phẩm');
+  spProducts.push(spNewProduct()); renderSpProducts();
+};
+renderSpProducts();
+$('#sp-get-product-images').onclick = fetchSpProductImages;
+function spCleanUrl(raw) {
+  const m = String(raw || '').match(/https?:\/\/[^\s<>"'“”‘’]+/i);
+  let u = m ? m[0] : (/^(www\.)?[a-z0-9-]+(\.[a-z0-9-]+)+([\/?#]\S*)?$/i.test(String(raw || '').trim().split(/\s+/)[0]) ? 'https://' + String(raw).trim().split(/\s+/)[0] : '');
+  return u.replace(/[.,;:!?)\]}»”’]+$/, '');
+}
+// Gọi backend mở link: lấy thông tin trang + ảnh sản phẩm, gắn vào đúng thẻ sản phẩm
+async function spScrapeProducts(products) {
+  products.forEach(p => { const u = spCleanUrl(p.url); if (u) p.url = u; });
+  if (products.some(p => !p.url)) throw new Error('Có link không hợp lệ (cần dạng https://…)');
+  products.forEach(p => p.imageStatus = 'loading'); renderSpProducts();
+  const r = await api('/api/product-images', {json: {urls: products.map(p => p.url)}});
+  (r.results || []).forEach((item, i) => {
+    const p = products[i]; if (!p) return;
+    if (item?.info) {
+      p.meta = item.info; p.blocked = !!item.blocked;
+      if (!p.name && item.info.title && !item.blocked) p.name = item.info.title;
+    }
+    if (!item || !item.dataBase64) { p.imageStatus = `Không lấy được ảnh: ${item?.error || 'không có kết quả'}`; return; }
+    const binary = atob(item.dataBase64), bytes = new Uint8Array(binary.length);
+    for (let j = 0; j < binary.length; j++) bytes[j] = binary.charCodeAt(j);
+    const file = new File([new Blob([bytes], {type: item.mimeType || 'image/jpeg'})], item.filename || `san_pham_${p.id}.jpg`, {type: item.mimeType || 'image/jpeg'});
+    if (p.image) spProductImageFiles.delete(p.image);
+    p.image = file; spProductImageFiles.set(file, p.url); p.imageStatus = 'Đã lấy ảnh từ link sản phẩm';
+  });
+  for (let i = (r.results || []).length; i < products.length; i++) products[i].imageStatus = 'Không nhận được kết quả lấy ảnh';
+  renderSpProducts();
+}
+async function fetchSpProductImages() {
+  const products = spGetProductInputs().filter(p => p.url.trim());
+  if (!products.length) return toast('Nhập ít nhất một link sản phẩm');
+  const button = $('#sp-get-product-images'); button.disabled = true;
+  button.textContent = `Đang lấy ảnh ${products.length} sản phẩm…`;
+  try {
+    await spScrapeProducts(products);
+    toast(`Đã lấy ảnh cho ${products.filter(p => p.image).length}/${products.length} sản phẩm.`);
+  } catch (e) {
+    products.forEach(p => p.imageStatus = `Lỗi: ${e.message}`); renderSpProducts(); toast(e.message);
+  } finally { button.disabled = false; button.textContent = 'Muse lấy ảnh tất cả sản phẩm'; }
+}
+function renderShortPromoImages() {
+  const previews = $('#sp-image-previews');
+  previews.innerHTML = '';
+  spImageFiles.forEach((file, index) => {
+    const card = document.createElement('div'); card.className = 'sp-image-preview';
+    const img = document.createElement('img'); img.src = URL.createObjectURL(file); img.alt = file.name;
+    img.onload = () => URL.revokeObjectURL(img.src);
+    const info = document.createElement('div'); info.className = 'hint'; info.textContent = spProductImageFiles.has(file) ? `Ảnh từ ${spProductImageFiles.get(file)}` : file.name;
+    const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = 'Xoá ảnh';
+    remove.onclick = () => { spImageFiles.splice(index, 1); spProductImageFiles.delete(file); renderShortPromoImages(); };
+    card.append(img, info, remove); previews.append(card);
+  });
+  $('#sp-image-label').textContent = spImageFiles.length
+    ? `${spImageFiles.length} ảnh đã chọn; tổng dung lượng tối đa 7 MB.`
+    : 'Ảnh JPG, PNG hoặc WebP sẽ được gửi kèm để Muse tham khảo (tổng dung lượng tối đa 7 MB).';
+}
+$('#sp-images').onchange = () => {
+  const known = new Set(spImageFiles.map(f => `${f.name}:${f.size}:${f.lastModified}`));
+  for (const file of $('#sp-images').files) {
+    const key = `${file.name}:${file.size}:${file.lastModified}`;
+    if (!known.has(key)) { spImageFiles.push(file); known.add(key); }
+  }
+  $('#sp-images').value = '';
+  renderShortPromoImages();
+};
+async function shortPromoAttachments(files = spImageFiles) {
+  if (files.length > 8) throw new Error('Tối đa 8 ảnh tham chiếu cho một lượt tạo video');
+  if (files.reduce((n, f) => n + f.size, 0) > 7 * 1024 * 1024) throw new Error('Tổng dung lượng ảnh phải nhỏ hơn 7 MB');
+  if (files.some(f => !['image/jpeg', 'image/png', 'image/webp'].includes(f.type))) throw new Error('Chỉ hỗ trợ ảnh JPG, PNG hoặc WebP');
+  return Promise.all(files.map(file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve({filename: file.name, mimeType: file.type || 'image/jpeg', category: 'image',
+      productUrl: spProductImageFiles.get(file) || '', dataBase64: String(reader.result).split(',')[1]});
+    reader.onerror = () => reject(new Error(`Không đọc được ảnh ${file.name}`));
+    reader.readAsDataURL(file);
+  })));
+}
+function spMetaBlock(p) {
+  const m = p.meta; if (!m || p.blocked) return '';
+  const rows = [['Tên (từ trang)', m.title], ['Thương hiệu', m.brand], ['Giá', m.price ? `${m.price} ${m.currency || ''}`.trim() : ''], ['Mô tả (từ trang)', m.description]]
+    .filter(([, v]) => v);
+  return rows.length ? `\n\nDỮ LIỆU ĐÃ ĐỌC TỪ TRANG (đáng tin, ưu tiên dùng):\n${rows.map(([k, v]) => `- ${k}: ${v}`).join('\n')}` : '';
+}
+function productPromptForAnalysis(p) {
+  return `Hãy mở và phân tích duy nhất trang sản phẩm này: ${p.meta?.finalUrl || p.url}${spMetaBlock(p)}\n\nTrích xuất thông tin có thể xác minh theo mẫu (nếu trang không mở được, dùng dữ liệu đã đọc ở trên):\nTên sản phẩm:\nLoại sản phẩm:\nMô tả ngắn:\nCông dụng do nhà bán hàng nêu:\nTính năng/chất liệu/thành phần:\nThông số nhìn thấy:\nQuy cách/màu/phiên bản:\nThông tin chưa rõ hoặc không có:\n\nKhông suy đoán, không tự thêm hiệu quả, giá hoặc đánh giá. Trả lời bằng tiếng Việt, gọn và trung thực.`;
+}
+async function analyzeSpProducts(targets) {
+  if (!targets.length) return toast('Nhập ít nhất một link sản phẩm');
+  if (targets.some(p => !/^https?:\/\//i.test(p.url))) return toast('Mỗi link phải bắt đầu bằng http:// hoặc https://');
+  const button = $('#sp-analyze'), status = $('#sp-analyze-status');
+  button.disabled = true; button.textContent = `Đang gửi ${targets.length} chat Muse…`;
+  targets.forEach(p => p.analysisStatus = 'Đang phân tích trong chat riêng…'); renderSpProducts();
+  try {
+    const common = await shortPromoAttachments(spImageFiles.slice(0, targets.some(p => p.image) ? 7 : 8));
+    const perPrompt = await Promise.all(targets.map(p => p.image ? shortPromoAttachments([p.image]) : []));
+    status.textContent = `Đã gửi ${targets.length} sản phẩm vào các chat riêng cùng lúc; Muse đang trả lời song song.`;
+    const r = await api('/api/muse/text-batch', {json: {prompts: targets.map(productPromptForAnalysis), attachments: common, attachments_per_prompt: perPrompt}});
+    (r.results || []).forEach((text, i) => {
+      const timedOut = /Quá \d+ phút Muse chưa làm xong/i.test(text || '');
+      targets[i].details = timedOut ? 'Muse chưa trả kết quả trong thời gian chờ. Hãy thử phân tích lại riêng sản phẩm này.' : (text || '').trim() || 'Muse chưa trả nội dung cho link này.';
+      targets[i].analysisStatus = timedOut ? 'Hết thời gian chờ' : !text ? 'Muse chưa trả nội dung' : /^(Không gửi được|Muse không trả lời được)/i.test(text) ? 'Chat riêng gặp lỗi' : 'Đã phân tích xong';
+      const title = targets[i].details.match(/^Tên sản phẩm:\s*(.+)$/mi)?.[1];
+      if (title && !targets[i].name) targets[i].name = title.trim();
+    });
+    if ((r.results || []).length < targets.length) {
+      for (let i = (r.results || []).length; i < targets.length; i++) {
+        targets[i].analysisStatus = 'Không nhận được kết quả';
+        targets[i].details = 'Không nhận được phản hồi từ Muse. Có thể thử phân tích lại sản phẩm này.';
+      }
+    }
+    renderSpProducts();
+    const done = (r.results || []).filter(x => String(x || '').trim()).length;
+    status.textContent = `Đã nhận kết quả cho ${done}/${targets.length} sản phẩm. Mỗi kết quả nằm trong đúng thẻ sản phẩm.`;
+    toast(`Muse đã phân tích ${done}/${targets.length} sản phẩm song song.`);
+  } catch (e) {
+    targets.forEach(p => { p.analysisStatus = `Lỗi: ${e.message}`; }); renderSpProducts();
+    status.textContent = `Không nhận được kết quả phân tích: ${e.message}`; toast(e.message);
+  } finally { button.disabled = false; button.textContent = 'Muse phân tích tất cả sản phẩm song song'; }
+}
+$('#sp-analyze').onclick = () => analyzeSpProducts(spGetProductInputs().filter(p => p.url.trim()));
+function productPromptForScript(p, sceneCount, duration) {
+  return `Tạo duy nhất MỘT kịch bản video affiliate cho sản phẩm này; thời lượng ${duration} giây, đúng ${sceneCount} cảnh nối tiếp, mỗi cảnh khoảng 10 giây.\n\nSẢN PHẨM: ${p.name || 'trích tên trong thông tin'}\nLINK: ${p.url || 'không có'}\nTHÔNG TIN ĐÃ PHÂN TÍCH: ${p.details || 'dựa vào link và ảnh đính kèm nếu truy cập được'}\nPHONG CÁCH HÌNH ẢNH: ${$('#sp-style').value}\nPHONG CÁCH KỊCH BẢN: ${$('#sp-script-style').value}\nCHỦ ĐỀ MONG MUỐN: ${$('#sp-idea').value.trim() || 'tự đề xuất phù hợp'}\nTỶ LỆ: ${$('#sp-aspect').value}\nÂM THANH: ${$('#sp-audio').selectedOptions[0].textContent}\nLỜI KÊU GỌI CUỐI: ${$('#sp-cta').value.trim() || 'Xem sản phẩm ở giỏ hàng'}\n\nYÊU CẦU: Kể một mạch quảng cáo có mở đầu thu hút, demo sản phẩm và kết thúc tự nhiên. Tạo hành động cụ thể, giữ cùng người dẫn và bối cảnh. Bám chính xác thông tin được cung cấp; không bịa công dụng, thông số, giá hay đánh giá. Nếu có ảnh tham chiếu, giữ đúng hình dáng, màu sắc, nhãn và bao bì sản phẩm. Mỗi cảnh cần mô tả hình ảnh/hành động và lời thoại/âm thanh. Trả về đúng ${sceneCount} prompt cảnh bằng tiếng Việt, chỉ dùng dòng --- giữa các cảnh, không thêm tiêu đề hoặc giải thích.`;
+}
+async function generateAffiliateScripts() {
+  const targets = spGetProductInputs().filter(p => p.url.trim() || p.details.trim());
+  if (!targets.length) return toast('Thêm sản phẩm và nhập link hoặc thông tin trước');
+  const duration = Math.max(10, Math.min(180, Math.round((+$('#sp-duration').value || 60) / 10) * 10));
+  const sceneCount = duration / 10; $('#sp-duration').value = duration;
+  const button = $('#sp-muse-script'); button.disabled = true; button.textContent = `Đang tạo ${targets.length} kịch bản riêng…`;
+  targets.forEach(p => p.scriptStatus = 'Đang tạo trong chat riêng…'); renderSpProducts();
+  try {
+    const common = await shortPromoAttachments(spImageFiles.slice(0, targets.some(p => p.image) ? 7 : 8));
+    const perPrompt = await Promise.all(targets.map(p => p.image ? shortPromoAttachments([p.image]) : []));
+    const r = await api('/api/muse/text-batch', {json: {prompts: targets.map(p => productPromptForScript(p, sceneCount, duration)), attachments: common, attachments_per_prompt: perPrompt}});
+    (r.results || []).forEach((text, i) => {
+      const timedOut = /Quá \d+ phút Muse chưa làm xong/i.test(text || '');
+      const failed = /^(Không gửi được|Muse không trả lời được)/i.test(text || '');
+      targets[i].script = timedOut || failed ? '' : (text || '').trim();
+      targets[i].scriptStatus = timedOut ? 'Hết thời gian chờ, thử lại' : failed ? 'Lỗi chat riêng' : targets[i].script ? 'Đã tạo xong' : 'Muse chưa trả kịch bản';
+    });
+    for (let i = (r.results || []).length; i < targets.length; i++) {
+      targets[i].script = ''; targets[i].scriptStatus = 'Không nhận được kết quả';
+    }
+    renderSpProducts();
+    const done = (r.results || []).filter(x => String(x || '').trim()).length;
+    $('#sp-submit').textContent = `Tạo video cho ${done} sản phẩm`;
+    toast(`Muse đã tạo ${done}/${targets.length} kịch bản trong các chat riêng.`);
+  } catch (e) {
+    targets.forEach(p => p.scriptStatus = `Lỗi: ${e.message}`); renderSpProducts(); toast(e.message);
+  } finally { button.disabled = false; button.textContent = 'Nhờ Muse tạo kịch bản cho từng sản phẩm'; }
+}
+async function generateCookingScript() {
+  const duration = Math.max(10, Math.min(180, Math.round((+$('#sp-duration').value || 60) / 10) * 10));
+  const count = Math.max(1, Math.min(20, Math.round(+$('#sp-count').value || 1))), sceneCount = duration / 10;
+  if (!$('#sp-subject').value.trim()) return toast('Nhập tên món ăn trước');
+  const prompt = `Viết ${count} kịch bản video quy trình nấu ăn, mỗi kịch bản ${duration} giây, đúng ${sceneCount} cảnh khoảng 10 giây. Món ăn: ${$('#sp-subject').value.trim()}. Nguyên liệu/cách làm: ${$('#sp-details').value.trim()}. Phong cách hình ảnh: ${$('#sp-style').value}. Phong cách kịch bản: ${$('#sp-script-style').value}. Chủ đề: ${$('#sp-idea').value.trim()}. Tỷ lệ ${$('#sp-aspect').value}. Âm thanh ${$('#sp-audio').selectedOptions[0].textContent}. Lời kết: ${$('#sp-cta').value.trim()}. Trả về theo dạng === VIDEO 1 ===, từng prompt cảnh cách nhau bằng ---. Không bịa nguyên liệu hoặc bước làm.`;
+  const button = $('#sp-muse-script'); button.disabled = true; button.textContent = 'Muse đang viết…';
+  try { const r = await api('/api/muse/text', {json: {prompt, attachments: await shortPromoAttachments()}}); $('#sp-prompts').value = r.text; $('#sp-prompts').dataset.videoCount = String(count); $('#sp-prompts').dataset.sceneCount = String(sceneCount); toast('Muse đã tạo kịch bản.'); }
+  catch (e) { toast(e.message); }
+  finally { button.disabled = false; button.textContent = 'Nhờ Muse tạo kịch bản'; }
+}
+$('#sp-muse-script').onclick = () => $('#sp-kind').value === 'cooking' ? generateCookingScript() : generateAffiliateScripts();
+$('#sp-submit').onclick = async () => {
+  const affiliate = $('#sp-kind').value === 'affiliate';
+  let videos;
+  if (affiliate) {
+    const duration = Math.max(10, Math.min(180, Math.round((+$('#sp-duration').value || 60) / 10) * 10));
+    const sceneCount = duration / 10;
+    const products = spGetProductInputs().filter(p => p.url || p.details || p.script);
+    if (!products.length) return toast('Thêm sản phẩm và tạo kịch bản trước');
+    videos = products.map((p, i) => ({product: p, title: p.name || `Sản phẩm ${i + 1}`, prompts: p.script.split(/^\s*---\s*$/m).map(x => x.trim()).filter(Boolean)}));
+    if (videos.some(v => !v.product.script.trim() || v.prompts.length !== sceneCount))
+      return toast(`Mỗi sản phẩm cần có kịch bản gồm đúng ${sceneCount} cảnh, ngăn cách bằng --- .`);
+  } else {
+    const raw = $('#sp-prompts').value.trim();
+    const groups = raw.split(/^=== VIDEO .* ===\s*$/m).slice(1).map(g => g.split(/^\s*---\s*$/m).map(s => s.trim()).filter(Boolean));
+    const videoCount = +$('#sp-prompts').dataset.videoCount || 0;
+    const sceneCount = +$('#sp-prompts').dataset.sceneCount || 0;
+    if (!groups.length || groups.length !== videoCount || groups.some(g => g.length !== sceneCount))
+      return toast('Bản nháp chưa đúng cấu trúc; hãy tạo lại hoặc kiểm tra các dòng === VIDEO N === và --- .');
+    videos = groups.map((prompts, i) => ({title: `Video ${i + 1}`, prompts}));
+  }
+  try {
+    const continuous = $('#sp-continuity').checked;
+    const hasProductImages = affiliate && videos.some(v => v.product.image);
+    const sharedRefs = await shortPromoAttachments(spImageFiles.slice(0, hasProductImages ? 7 : 8));
+    const requestVideos = await Promise.all(videos.map(async v => ({
+      title: v.title, prompts: v.prompts,
+      attachments: affiliate && v.product.image ? await shortPromoAttachments([v.product.image]) : [],
+    })));
+    const r = await api('/api/sequences', {json: {
+      continuity: continuous,
+      attachments: sharedRefs,
+      videos: requestVideos,
+    }});
+    const n = r.job_ids.length;
+    toast(`Đã thêm ${videos.length} video riêng theo sản phẩm (${n} cảnh) vào hàng đợi`);
+    refresh(); showTab('create'); showCreate('shortpromo'); setShortPromoView('progress');
+  } catch (e) { toast(e.message); }
+};
+
+let spSequences = [], spCurrent = null, spOrder = [], spPlaylist = false;
+async function loadShortPromoSequences() {
+  try { spSequences = await api('/api/sequences'); } catch (e) { return; }
+  const box = $('#sp-sequence-list');
+  if (!box) return;
+  if (!spSequences.length) {
+    box.innerHTML = '<div class="empty">Chưa có video nào được tạo từ mục này.</div>';
+    $('#sp-editor').classList.add('hidden');
+    return;
+  }
+  box.innerHTML = spSequences.map(seq => {
+    const ready = seq.scenes.filter(s => s.videos?.length).length;
+    const done = seq.scenes.length > 0 && ready === seq.scenes.length;
+    const rows = seq.scenes.map((scene, i) => {
+      const hasVideo = Boolean(scene.videos?.length);
+      const status = hasVideo ? 'Short sẵn sàng' : (STATUS[scene.status] || scene.status || 'Đang chờ');
+      const statusClass = hasVideo ? 'done' : (scene.status || 'queued');
+      const error = scene.error ? `<span class="hint" style="color:var(--err)">${esc(scene.error)}</span>` : '';
+      return `<div class="sp-progress-row"><span>Short ${i + 1}</span><span class="badge b-${esc(statusClass)}">${esc(status)}</span>${error}</div>`;
+    }).join('');
+    const pct = seq.scenes.length ? Math.round(ready / seq.scenes.length * 100) : 0;
+    return `<div class="sp-progress-card"><div class="row" style="justify-content:space-between"><span><b>${esc(seq.title)}</b><br><span class="hint">${ready}/${seq.scenes.length} short sẵn sàng · ${pct}% · ${seq.continuity ? 'nối cảnh bật' : 'cảnh độc lập'}</span></span>
+      <button class="btn sm ${done ? 'primary' : ''}" data-sp-open="${seq.id}">${spCurrent?.id === seq.id ? 'Đang xem & ghép' : 'Xem & ghép'}</button></div><div class="sp-progress-rows">${rows}</div></div>`;
+  }).join('');
+  $$('[data-sp-open]').forEach(b => b.onclick = () => openShortPromo(+b.dataset.spOpen));
+  if (spCurrent) {
+    const latest = spSequences.find(s => s.id === spCurrent.id);
+    if (latest) {
+      const oldIds = spOrder.map(s => s.id);
+      const byId = new Map(latest.scenes.map(s => [s.id, s]));
+      spOrder = oldIds.map(id => byId.get(id)).filter(Boolean);
+      spCurrent = latest;
+      renderShortPromoEditor();
+    }
+  }
+}
+function openShortPromo(id) {
+  spCurrent = spSequences.find(s => s.id === id);
+  if (!spCurrent) return;
+  spOrder = [...spCurrent.scenes].sort((a, b) => a.sequence_order - b.sequence_order);
+  $('#sp-editor').classList.remove('hidden');
+  $('#sp-merge-result').innerHTML = '';
+  renderShortPromoEditor();
+}
+function renderShortPromoEditor() {
+  const list = $('#sp-scene-list');
+  if (!list || !spCurrent) return;
+  const ready = spOrder.filter(s => s.videos?.length).length;
+  list.innerHTML = spOrder.map((scene, i) => {
+    const video = scene.videos?.[0];
+    const status = video ? `${fmtDur(video.duration)} · clip sẵn sàng` : (STATUS[scene.status] || scene.status);
+    const thumb = video?.thumb_url ? `background-image:url('${esc(video.thumb_url)}')` : '';
+    return `<div class="sitem"><div class="sthumb" style="${thumb}"></div><div class="grow"><b>Cảnh ${i + 1}</b><div class="hint">${esc(status)}</div>
+      <div class="row" style="margin-top:6px"><button class="btn sm" data-sp-preview="${i}" ${video ? '' : 'disabled'}>Xem</button>
+      <button class="btn sm" data-sp-up="${i}" ${i ? '' : 'disabled'}>↑</button><button class="btn sm" data-sp-down="${i}" ${i < spOrder.length - 1 ? '' : 'disabled'}>↓</button></div></div></div>`;
+  }).join('');
+  $$('[data-sp-preview]').forEach(b => b.onclick = () => playShortPromo(+b.dataset.spPreview, false));
+  $$('[data-sp-up]').forEach(b => b.onclick = () => moveShortPromo(+b.dataset.spUp, -1));
+  $$('[data-sp-down]').forEach(b => b.onclick = () => moveShortPromo(+b.dataset.spDown, 1));
+  $('#sp-play-label').textContent = `${ready}/${spOrder.length} cảnh đã sẵn sàng`;
+  $('#sp-merge').disabled = ready !== spOrder.length || ready === 0;
+}
+function moveShortPromo(index, delta) {
+  const next = index + delta;
+  if (next < 0 || next >= spOrder.length) return;
+  [spOrder[index], spOrder[next]] = [spOrder[next], spOrder[index]];
+  renderShortPromoEditor();
+}
+function playShortPromo(index, playlist) {
+  const available = spOrder.map((s, i) => ({scene: s, index: i, video: s.videos?.[0]})).filter(x => x.video);
+  const item = available.find(x => x.index === index);
+  if (!item) return;
+  const player = $('#sp-preview');
+  spPlaylist = playlist;
+  player.onended = () => {
+    if (!spPlaylist) return;
+    const next = available.find(x => x.index > item.index);
+    if (next) playShortPromo(next.index, true);
+    else { spPlaylist = false; $('#sp-play-label').textContent = 'Xem hết các cảnh'; }
+  };
+  player.src = item.video.url;
+  player.load();
+  player.play().catch(() => {});
+  $('#sp-play-label').textContent = `Đang xem cảnh ${index + 1}/${spOrder.length}`;
+}
+$('#sp-play-all').onclick = () => {
+  const first = spOrder.findIndex(s => s.videos?.length);
+  if (first >= 0) playShortPromo(first, true);
+};
+$('#sp-merge').onclick = async () => {
+  if (!spCurrent || !spOrder.length || spOrder.some(s => !s.videos?.length)) return toast('Cần đợi đủ video cho tất cả các cảnh trước khi ghép.');
+  const ids = spOrder.map(s => s.videos[0].id);
+  const fd = new FormData();
+  fd.append('ids', JSON.stringify(ids));
+  fd.append('aspect', $('#sp-merge-aspect').value);
+  fd.append('xfade', $('#sp-merge-xfade').value || '0');
+  fd.append('keep_audio', $('#sp-keep-audio').checked ? 'true' : 'false');
+  fd.append('music_volume', (+$('#sp-merge-volume').value || 25) / 100);
+  fd.append('name', spCurrent.title);
+  if ($('#sp-merge-music').files[0]) fd.append('music', $('#sp-merge-music').files[0]);
+  const btn = $('#sp-merge'); btn.disabled = true; btn.textContent = 'Đang ghép…';
+  try {
+    const v = await api('/api/merge', {method: 'POST', body: fd});
+    $('#sp-merge-result').innerHTML = `<video src="${esc(v.url)}" controls style="width:100%;border-radius:8px;background:#000"></video><div class="hint" style="margin-top:6px">${esc(v.name)} · ${fmtDur(v.duration)}</div>`;
+    toast('Đã ghép xong video'); loadVideos();
+  } catch (e) { toast(e.message); }
+  btn.disabled = false; btn.textContent = 'Ghép các short theo thứ tự';
+};
+setInterval(() => {
+  if (!$('#create-shortpromo')?.classList.contains('hidden')) loadShortPromoSequences();
+}, 5000);
+
+// ---------- trạng thái & hàng đợi ----------
+async function refresh() {
+  try { S = await api('/api/state'); } catch (e) { $('#worker-text').textContent = 'Mất kết nối tới tool'; $('#worker-dot').className = 'dot err'; return; }
+  const w = S.worker;
+  const li = w.logged_in;
+  for (const [dot, txt] of [['#login-dot', '#login-text'], ['#login-dot2', '#login-text2']]) {
+    $(dot).className = 'dot ' + (li === true ? 'ok' : li === false ? 'err' : '');
+    $(txt).textContent = li === true ? 'Đã đăng nhập Muse' + (S.account ? ` · ${S.account}` : '') : li === false ? 'Chưa đăng nhập / cookie hết hạn' : 'Chưa kiểm tra đăng nhập';
+  }
+  $('#login-warn').classList.toggle('hidden', li !== false);
+  $('#login-done').classList.toggle('hidden', w.phase !== 'login');
+  $('#worker-dot').className = 'dot ' + (w.current_job || w.current_task ? 'run' : w.paused ? 'err' : 'ok');
+  $('#worker-text').textContent = w.paused && !w.current_job ? 'Hàng đợi đang tạm dừng'
+    : !w.current_job && w.cooldown_until ? `Muse đang lỗi — thử lại lúc ${fmtClock(w.cooldown_until)}`
+    : (PHASE[w.phase] || w.phase) + (w.current_job ? ` · job #${w.current_job}` : '');
+  if (!w.current_job && w.cooldown_until) $('#worker-dot').className = 'dot err';
+  $('#pause-btn').textContent = w.paused ? 'Tiếp tục hàng đợi' : 'Tạm dừng hàng đợi';
+  if (S.account !== accActive) { accActive = S.account; loadAccounts(); }
+  const active = S.jobs.filter(j => ['queued', 'running', 'waiting'].includes(j.status)).length;
+  $('#qcount').textContent = active || '';
+  renderJobs();
+  if (openJob) renderJobDetail(openJob, true);
+  if (!settingsLoaded) fillSettings();
+}
+function renderJobs() {
+  const body = $('#jobs-body');
+  $('#jobs-empty').classList.toggle('hidden', S.jobs.length > 0);
+  body.innerHTML = S.jobs.map(j => `
+    <tr class="click" data-id="${j.id}">
+      <td>${j.id}</td>
+      <td><div class="ellip">${esc(j.prompt)}</div>${j.error ? `<div class="hint" style="color:var(--err)">${esc(j.error)}</div>` : ''}</td>
+      <td><span class="badge b-${j.status}">${STATUS[j.status] || j.status}</span>${j.status === 'waiting' ? `<div class="hint">thử lại lúc ${fmtClock(j.retry_at)}</div>` : ''}${j.attempts > 1 ? `<div class="hint">${j.attempts} lần gửi</div>` : ''}</td>
+      <td>${j.video_count || '–'}</td>
+      <td class="hint">${fmtTime(j.started || j.created)}</td>
+      <td style="white-space:nowrap">
+        ${j.status === 'waiting' ? `<button class="btn sm" data-act="retry">Thử ngay</button> ` : ''}${['queued', 'running', 'waiting'].includes(j.status) ? `<button class="btn sm danger" data-act="cancel">Huỷ</button>` : `<button class="btn sm" data-act="retry">Chạy lại</button>`}
+      </td>
+    </tr>`).join('');
+  $$('tr.click', body).forEach(tr => tr.onclick = e => {
+    const id = +tr.dataset.id, act = e.target.dataset.act;
+    if (act) { e.stopPropagation(); jobAction(id, act); } else renderJobDetail(id);
+  });
+}
+async function jobAction(id, act) {
+  try {
+    if (act === 'delete') { if (!confirm(`Xoá job #${id}? (video đã tải vẫn giữ lại)`)) return; await api(`/api/jobs/${id}`, {method: 'DELETE'}); closeModal(); }
+    else await api(`/api/jobs/${id}/${act}`, {method: 'POST'});
+    toast({cancel: 'Đã huỷ', retry: 'Đã đưa lại vào hàng đợi', delete: 'Đã xoá'}[act]);
+    refresh();
+  } catch (e) { toast(e.message); }
+}
+async function renderJobDetail(id, silent) {
+  openJob = id;
+  let j; try { j = await api(`/api/jobs/${id}`); } catch (e) { return; }
+  if (openJob !== id) return;
+  const box = $('#modal-box');
+  const logEl = $('#job-log');
+  const keepScroll = silent && logEl && logEl.scrollTop + logEl.clientHeight < logEl.scrollHeight - 10 ? logEl.scrollTop : null;
+  box.innerHTML = `
+    <div class="row" style="justify-content: space-between; margin-bottom: 12px;">
+      <h2 style="margin:0">Job #${j.id} <span class="badge b-${j.status}">${STATUS[j.status]}</span></h2>
+      <div class="row">
+        ${j.status === 'waiting' ? `<button class="btn sm" data-act="retry">Thử ngay</button>` : ''}
+        ${['queued', 'running', 'waiting'].includes(j.status) ? `<button class="btn sm danger" data-act="cancel">Huỷ</button>` : `<button class="btn sm" data-act="retry">Chạy lại</button><button class="btn sm danger" data-act="delete">Xoá</button>`}
+        <button class="btn sm" id="close-modal">Đóng</button>
+      </div>
+    </div>
+    <div class="kv" style="margin-bottom: 14px;">
+      <div>Gửi vào</div><div>${(j.target_url || S.settings.target_url) === 'new' ? 'Chat mới trên Muse' : esc(j.target_url || S.settings.target_url)}</div>
+      <div>Số lần gửi</div><div>${j.attempts}${j.service_retries ? ` · Muse lỗi máy chủ ${j.service_retries} lần` : ''}</div>
+      ${j.status === 'waiting' ? `<div>Thử lại lúc</div><div>${fmtClock(j.retry_at)}</div>` : ''}
+      <div>Bắt đầu / xong</div><div>${fmtTime(j.started) || '–'} → ${fmtTime(j.finished) || '…'}</div>
+      ${j.error ? `<div>Lỗi</div><div style="color:var(--err)">${esc(j.error)}</div>` : ''}
+    </div>
+    <label>Prompt</label><div class="log" style="background:var(--panel2);color:var(--text);max-height:140px">${esc(j.prompt)}</div>
+    ${j.videos.length ? `<label style="margin-top:14px">Video (${j.videos.length})</label>
+      <div class="vgrid">${j.videos.map(v => `<div><video src="${v.url}" controls preload="metadata" style="width:100%;border-radius:8px;background:#000"></video>
+        <div class="hint">${fmtDur(v.duration)} · ${v.width}×${v.height}</div></div>`).join('')}</div>` : ''}
+    ${j.reply ? `<label style="margin-top:14px">Muse trả lời</label><div class="log" style="background:var(--panel2);color:var(--text);max-height:200px">${esc(j.reply)}</div>` : ''}
+    <label style="margin-top:14px">Nhật ký</label><div class="log" id="job-log">${esc(j.log) || '…'}</div>
+    ${j.debug_screen ? `<label style="margin-top:14px">Ảnh chụp màn hình lúc kết thúc</label><img src="${j.debug_screen}" style="width:100%;border-radius:8px;border:1px solid var(--border)">` : ''}`;
+  const lg = $('#job-log'); lg.scrollTop = keepScroll ?? lg.scrollHeight;
+  $('#close-modal').onclick = closeModal;
+  $$('[data-act]', box).forEach(b => b.onclick = () => jobAction(j.id, b.dataset.act));
+  if (!silent) $('#modal').classList.add('open');
+}
+function closeModal() { openJob = null; $('#modal').classList.remove('open'); $('#modal-box').innerHTML = ''; }
+$('#modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+$('#pause-btn').onclick = async () => { await api(`/api/queue/${S.worker.paused ? 'resume' : 'pause'}`, {method: 'POST'}); refresh(); };
+
+// ---------- thư viện ----------
+async function loadVideos() {
+  try { videos = await api('/api/videos'); } catch (e) { return; }
+  const ids = new Set(videos.map(v => v.id));
+  selected = selected.filter(id => ids.has(id));
+  saveSel();
+  $('#vcount').textContent = videos.length || '';
+  renderLibrary();
+}
+function saveSel() { localStorageSet('sel', JSON.stringify(selected)); $('#mcount').textContent = selected.length || ''; }
+function renderLibrary() {
+  const list = videos.filter(v => libFilter === 'all' || v.kind === libFilter);
+  $('#lib-empty').classList.toggle('hidden', list.length > 0);
+  $('#sel-text').textContent = selected.length ? `Đã chọn ${selected.length} clip (thứ tự theo lúc chọn)` : 'Chưa chọn clip nào';
+  $('#vgrid').innerHTML = list.map(v => `
+    <div class="vcard ${selected.includes(v.id) ? 'sel' : ''}" data-id="${v.id}">
+      <div class="vthumb" style="background-image:url('${v.thumb_url || ''}')" data-act="play"></div>
+      <input type="checkbox" class="vcheck" data-act="sel" ${selected.includes(v.id) ? 'checked' : ''} aria-label="Chọn clip">
+      <span class="vtag">${v.kind === 'merged' ? 'Đã ghép' : fmtDur(v.duration)}</span>
+      <div class="vmeta"><div class="t" title="${esc(v.job_title || v.name)}">${esc(v.job_title || v.name)}</div>
+        <div class="m">${fmtDur(v.duration)} · ${v.width}×${v.height} · ${fmtSize(v.size)}</div></div>
+      <div class="vactions">
+        <a class="btn sm" href="${v.url}" download="${esc(v.name)}">Tải</a>
+        ${v.job_id ? `<button class="btn sm" data-act="job">Job #${v.job_id}</button>` : ''}
+        <button class="btn sm danger" data-act="del" style="margin-left:auto">Xoá</button>
+      </div>
+    </div>`).join('');
+  $$('.vcard').forEach(card => card.onclick = e => {
+    const id = +card.dataset.id, act = e.target.dataset.act, v = videos.find(x => x.id === id);
+    if (act === 'sel') { selected = e.target.checked ? [...selected, id] : selected.filter(x => x !== id); saveSel(); renderLibrary(); }
+    else if (act === 'play') playVideo(v);
+    else if (act === 'job') renderJobDetail(v.job_id);
+    else if (act === 'del') delVideo(v);
+  });
+}
+function playVideo(v) {
+  openJob = null;
+  $('#modal-box').innerHTML = `<div class="row" style="justify-content:space-between;margin-bottom:10px"><b>${esc(v.job_title || v.name)}</b>
+    <button class="btn sm" id="close-modal">Đóng</button></div><video src="${v.url}" controls autoplay></video>
+    <div class="hint" style="margin-top:8px">${esc(v.name)} · ${fmtDur(v.duration)} · ${v.width}×${v.height}</div>`;
+  $('#close-modal').onclick = closeModal;
+  $('#modal').classList.add('open');
+}
+async function delVideo(v) {
+  if (!confirm(`Xoá vĩnh viễn ${v.name}?`)) return;
+  await api(`/api/videos/${v.id}`, {method: 'DELETE'});
+  loadVideos();
+}
+$$('#lib-seg button').forEach(b => b.onclick = () => { libFilter = b.dataset.f; $$('#lib-seg button').forEach(x => x.classList.toggle('on', x === b)); renderLibrary(); });
+$('#sel-clear').onclick = () => { selected = []; saveSel(); renderLibrary(); };
+$('#sel-merge').onclick = () => selected.length ? showTab('merge') : toast('Chọn ít nhất 1 clip');
+$('#open-folder').onclick = () => api('/api/open-folder', {method: 'POST'});
+$('#import-file').onchange = async e => {
+  for (const f of e.target.files) {
+    const fd = new FormData(); fd.append('file', f);
+    try { await api('/api/videos/import', {method: 'POST', body: fd}); toast(`Đã nhập ${f.name}`); } catch (err) { toast(err.message); }
+  }
+  e.target.value = ''; loadVideos();
+};
+
+// ---------- ghép ----------
+function renderOrder() {
+  const items = selected.map(id => videos.find(v => v.id === id)).filter(Boolean);
+  $('#order-empty').classList.toggle('hidden', items.length > 0);
+  $('#order').innerHTML = items.map((v, i) => `
+    <div class="oitem" data-id="${v.id}">
+      <b style="width:20px;text-align:center">${i + 1}</b>
+      <img src="${v.thumb_url || ''}" alt="">
+      <div class="grow"><div class="ellip" style="max-width:100%">${esc(v.job_title || v.name)}</div><div class="hint">${fmtDur(v.duration)} · ${v.width}×${v.height}</div></div>
+      <button class="btn sm" data-act="up" ${i === 0 ? 'disabled' : ''} aria-label="Lên">↑</button>
+      <button class="btn sm" data-act="down" ${i === items.length - 1 ? 'disabled' : ''} aria-label="Xuống">↓</button>
+      <button class="btn sm danger" data-act="rm" aria-label="Bỏ">✕</button>
+    </div>`).join('');
+  const total = items.reduce((a, v) => a + (v.duration || 0), 0);
+  const xf = +$('#m-xfade').value || 0;
+  $('#order-total').textContent = items.length ? `Tổng ≈ ${fmtDur(Math.max(0, total - xf * (items.length - 1)))}` : '';
+  $$('.oitem').forEach(el => el.onclick = e => {
+    const id = +el.dataset.id, i = selected.indexOf(id), act = e.target.dataset.act;
+    if (act === 'up' && i > 0) [selected[i - 1], selected[i]] = [selected[i], selected[i - 1]];
+    else if (act === 'down' && i < selected.length - 1) [selected[i + 1], selected[i]] = [selected[i], selected[i + 1]];
+    else if (act === 'rm') selected.splice(i, 1);
+    else return;
+    saveSel(); renderOrder();
+  });
+}
+$('#m-xfade').oninput = renderOrder;
+$('#m-vol').oninput = () => $('#m-vol-v').textContent = $('#m-vol').value + '%';
+$('#m-go').onclick = async () => {
+  if (!selected.length) return toast('Chọn clip ở tab Thư viện trước');
+  const fd = new FormData();
+  fd.append('ids', JSON.stringify(selected));
+  fd.append('aspect', $('#m-aspect').value);
+  fd.append('xfade', $('#m-xfade').value || '0');
+  fd.append('keep_audio', $('#m-audio').checked);
+  fd.append('music_volume', $('#m-vol').value / 100);
+  fd.append('name', $('#m-name').value);
+  if ($('#m-music').files[0]) fd.append('music', $('#m-music').files[0]);
+  const btn = $('#m-go'); btn.disabled = true; btn.textContent = 'Đang ghép…';
+  $('#m-result').innerHTML = '';
+  try {
+    const v = await api('/api/merge', {method: 'POST', body: fd});
+    $('#m-result').innerHTML = `<video src="${v.url}" controls style="width:100%;border-radius:10px;background:#000"></video>
+      <div class="row" style="margin-top:8px;justify-content:space-between"><span class="hint">${esc(v.name)} · ${fmtDur(v.duration)}</span>
+      <a class="btn sm primary" href="${v.url}" download="${esc(v.name)}">Tải về</a></div>`;
+    toast('Ghép xong!'); loadVideos();
+  } catch (e) { toast(e.message); }
+  btn.disabled = false; btn.textContent = 'Ghép video';
+};
+
+// ---------- cài đặt ----------
+let settingsLoaded = false;
+function fillSettings() {
+  const s = S.settings; if (!s.target_url) return;
+  $('#s-target').value = s.target_url; $('#s-headless').value = s.headless ? '1' : '0';
+  $('#s-timeout').value = s.reply_timeout_min; $('#s-grace').value = s.idle_grace_sec;
+  $('#s-delay').value = s.delay_between_jobs_sec; $('#s-retry').value = s.auto_retry;
+  $('#s-swait').value = s.service_retry_wait_min; $('#s-smax').value = s.service_retry_max; $('#s-suffix').value = s.prompt_suffix;
+  settingsLoaded = true;
+}
+$('#s-save').onclick = async () => {
+  try {
+    await api('/api/settings', {json: {
+      target_url: $('#s-target').value.trim() || 'new', headless: $('#s-headless').value === '1',
+      reply_timeout_min: +$('#s-timeout').value, idle_grace_sec: +$('#s-grace').value,
+      delay_between_jobs_sec: +$('#s-delay').value, auto_retry: +$('#s-retry').value,
+      service_retry_wait_min: +$('#s-swait').value, service_retry_max: +$('#s-smax').value, prompt_suffix: $('#s-suffix').value,
+    }});
+    toast('Đã lưu cài đặt'); settingsLoaded = false; refresh();
+  } catch (e) { toast(e.message); }
+};
+let accActive;
+async function loadAccounts() {
+  let list = [];
+  try { list = await api('/api/accounts'); } catch (e) { return; }
+  const box = $('#accounts');
+  box.innerHTML = list.length ? '' : '<p class="hint">Chưa có tài khoản nào — dán cookie JSON bên dưới để đăng nhập.</p>';
+  for (const a of list) {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.style.cssText = 'justify-content: space-between; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px;';
+    const exp = a.expires ? new Date(a.expires * 1000).toLocaleDateString('vi-VN') : '?';
+    const expired = a.expires && a.expires * 1000 < Date.now();
+    const info = document.createElement('span');
+    info.innerHTML = `<b></b> <span class="hint"></span>`;
+    info.querySelector('b').textContent = a.name;
+    info.querySelector('.hint').textContent = (a.active ? '· đang dùng ' : '') + `· cookie ${expired ? 'đã hết hạn' : 'hạn tới ' + exp}`;
+    const btns = document.createElement('span');
+    btns.className = 'row';
+    if (!a.active) {
+      const use = document.createElement('button');
+      use.className = 'btn sm'; use.textContent = 'Chuyển sang';
+      use.onclick = () => switchAccount(a.name, use);
+      btns.append(use);
+    }
+    const del = document.createElement('button');
+    del.className = 'btn sm'; del.textContent = 'Xoá';
+    del.onclick = async () => {
+      if (!confirm(`Xoá tài khoản "${a.name}" khỏi tool?`)) return;
+      try { await api('/api/accounts/' + encodeURIComponent(a.name), {method: 'DELETE'}); toast('Đã xoá'); }
+      catch (e) { toast(e.message); }
+      loadAccounts(); refresh();
+    };
+    btns.append(del);
+    row.append(info, btns);
+    box.append(row);
+  }
+}
+function loginResult(r) {
+  toast(r.logged_in === null ? `Đã chọn ${r.name} — áp dụng sau job đang chạy`
+    : r.logged_in ? `Đã đăng nhập: ${r.name}` : `${r.name}: cookie không đăng nhập được (hết hạn hoặc sai)`);
+}
+async function switchAccount(name, btn) {
+  btn.disabled = true; btn.textContent = 'Đang chuyển…';
+  try { loginResult(await api(`/api/accounts/${encodeURIComponent(name)}/activate`, {method: 'POST'})); }
+  catch (e) { toast(e.message); }
+  loadAccounts(); refresh();
+}
+$('#cookies-save').onclick = async () => {
+  const b = $('#cookies-save');
+  if (!$('#cookies').value.trim()) return toast('Hãy dán cookie JSON trước');
+  b.disabled = true; b.textContent = 'Đang đăng nhập…';
+  try {
+    loginResult(await api('/api/accounts', {json: {text: $('#cookies').value, name: $('#acc-name').value.trim() || null}}));
+    $('#cookies').value = ''; $('#acc-name').value = '';
+  } catch (e) { toast(e.message); }
+  b.disabled = false; b.textContent = 'Đăng nhập bằng cookie';
+  loadAccounts(); refresh();
+};
+$('#login-check').onclick = async () => {
+  const b = $('#login-check'); b.disabled = true; b.textContent = 'Đang kiểm tra…';
+  try { const r = await api('/api/login/check', {method: 'POST'}); toast(r.logged_in ? 'Đăng nhập OK' : 'Chưa đăng nhập được'); }
+  catch (e) { toast(e.message); }
+  b.disabled = false; b.textContent = 'Kiểm tra'; refresh();
+};
+$('#login-open').onclick = async () => {
+  try { await api('/api/login/open', {method: 'POST'}); toast('Đã mở Chrome — đăng nhập rồi bấm "Tôi đã đăng nhập xong"'); setTimeout(refresh, 1500); }
+  catch (e) { toast(e.message); }
+};
+$('#login-done').onclick = async () => { await api('/api/login/done', {method: 'POST'}); toast('Đang kiểm tra đăng nhập…'); setTimeout(refresh, 4000); };
+
+// ---------- khởi động ----------
+showTab(localStorageGet('tab') || 'create');
+refresh(); loadVideos();
+setInterval(refresh, 2500);
+</script>
+<script src="/mv.js"></script>
+<script src="/model.js"></script>
+<script src="/remake.js"></script>
+<script src="/pose.js"></script>
+<script src="/posebatch.js"></script>
+<script src="/stickerman.js"></script>
+</body>
+</html>

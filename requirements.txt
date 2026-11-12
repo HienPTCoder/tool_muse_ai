@@ -1,0 +1,6 @@
+playwright
+fastapi
+uvicorn
+python-multipart
+faster-whisper>=1.2
+pillow
