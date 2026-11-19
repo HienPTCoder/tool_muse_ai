@@ -12,3 +12,7 @@ __pycache__/
 *.mov
 *.mp3
 *.wav
+
+# assets bắt buộc cho video pose
+!post/pose_ad_assets/
+!post/pose_ad_assets/*.mp4
